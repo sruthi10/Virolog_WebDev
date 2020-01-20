@@ -1,0 +1,17 @@
+TO add dependecies to path
+
+PATH=$PATH:/net/hopper/groups/biovisual/libsvm-3.0
+export PYTHONPATH="${PYTHONPATH}:/net/hopper/groups/biovisual/biopython-1.70" 
+
+To convert the multiline fasta sequences into single line fasta sequences
+awk '!/^>/ { printf "%s", $0; n = "\n" } /^>/ { print n $0; n = "" } END { printf "%s", n }' Mouse.MitoCarta2.0.fasta >> formatted_input.faa
+
+
+Post Processing(Combing the csv files)
+---
+sed 1d mitofatesResults2.csv > mitofatesResults2noheader.csv     : remove the header from second file as it the same in both
+cat mitofatesResults1.csv mitofatesResults2noheader.csv > Final_MitoFatesResults.csv
+
+to verify sequence count between input and outpu
+---
+grep -c 'YOUR LETTER' YOUR FILE

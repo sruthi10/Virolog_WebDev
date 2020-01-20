@@ -1,0 +1,22 @@
+First, run 'main.py' to download all of the webpages from an online journal. See 'crawler.py' for information about the arguments to pass.
+
+
+Then, run 'analyze.py' to get the counts of the number or articles each protein is mentioned in.
+
+
+Here are arguments which you should pass to the crawler to crawl some open access journals:
+
+PLOS Genetics. (Other PLOS journals are similar):
+net_locs = ['journals.plos.org']
+paths = ['/plosgenetics/volume', '/plosgenetics/issue', '/plosgenetics/article']
+seeds = ['http://journals.plos.org/plosgenetics/volume']
+
+MDPI Viruses
+net_locs = ['www.mdpi.com']
+paths = ['/journal/viruses', '/1999-4915', '/1999-4915/[0-9]+/[0-9]+/[0-9]+', '/1999-4915/[0-9]+/[0-9]+', '/1999-4915/[0-9]+', '/1999-4915/[0-9]+/[0-9]+/[0-9]+/htm']
+seeds = ['http://www.mdpi.com/1999-4915/1']
+
+mBio ASM:
+net_locs = ['mbio.asm.org']
+paths = ['/content/by/year/[0-9]+', '/content/[0-9]+/[0-9]+/.*']
+seeds = ['http://mbio.asm.org/content/by/year']
