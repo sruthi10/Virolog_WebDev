@@ -86,7 +86,7 @@ def virusTaxonomyView():
 
 @app.route('/')
 def dashboard():
-    return render_template('dashboard.html')
+    return render_template('newDashboard.html')
 
 
 if __name__ == '__main__':

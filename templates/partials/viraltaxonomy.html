@@ -1,7 +1,7 @@
-{% extends "layout.html" %}
+{% extends "newLayout.html" %}
 {% block title %}Visualization of Viral Proteome - Taxonomy{% endblock %}
+{% block header %}Viral Taxonomy Distribution{% endblock %}
 {% block content %}
-  <h1>Viral Taxonomy Distribution</h1>
             <div class="chartWrapper-viral-taxonomy" id="taxonomy-distribution">
               <button id="viral-taxonomy-play" class="btn btn-success"><i class="fas fa-play"></i> Draw</button>
               <div class="chartAreaWrapper-viral-taxonomy">
@@ -13,8 +13,8 @@
             </div>
 
           <h2>Virolog List</h2>
-          <div class="table-responsive row">
-            <table id="taxTable" class="table sortable table-striped table-sm">
+          <div id="tableParent" class="table-responsive row">
+            <table id="taxTable" class="table table-striped table-bordered table-sm">
 							<thead>
 								<tr>
 									<th>Sequence ID</th>
@@ -31,6 +31,6 @@
     $('#viral-taxonomy-play').on('click', function(){
       drawPieTaxonomy(); 
       buildHtmlTable('#taxTable'); 
-      $('#taxTable').addClass('sortable');
+      $('#taxTable').addClass('table table-striped table-bordered table-sm');
     });
 {% endblock %}
