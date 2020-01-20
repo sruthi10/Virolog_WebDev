@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block title %}Visualization of Viral Proteome - Taxonomy{% endblock %}
+{% block content %}
+  <h1>Viral Taxonomy Distribution</h1>
+            <div class="chartWrapper-viral-taxonomy" id="taxonomy-distribution">
+              <button id="viral-taxonomy-play" class="btn btn-success"><i class="fas fa-play"></i> Draw</button>
+              <div class="chartAreaWrapper-viral-taxonomy">
+                <div class="chartAreaWrapper2-viral-taxonomy">
+                  <canvas id="myChart-viral-taxonomy"></canvas>
+                </div>
+              </div>
+              <canvas id="myChartAxis-viral-taxonomy" height="10" width="0"></canvas>
+            </div>
+
+          <h2>Virolog List</h2>
+          <div class="table-responsive row">
+            <table id="taxTable" class="table sortable table-striped table-sm">
+							<thead>
+								<tr>
+									<th>Sequence ID</th>
+									<th>Domain</th>
+									<th>Group</th>
+								</tr>
+							</thead>
+							<tbody id="tableBody"></tbody>
+            </table>
+          </div>
+{% endblock %}
+
+{% block script %}
+    $('#viral-taxonomy-play').on('click', function(){
+      drawPieTaxonomy(); 
+      buildHtmlTable('#taxTable'); 
+      $('#taxTable').addClass('sortable');
+    });
+{% endblock %}

@@ -1,0 +1,30 @@
+#taxonomy-distribution{
+    margin-top: 20px;
+    background: #ffd;
+    overflow-y: scroll;
+}
+
+#viral-taxonomy-play{
+    
+}
+.chartWrapper > canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    pointer-events:none;
+}
+
+.chartAreaWrapper {
+    /*width: 600px;*/
+    overflow-x: scroll;
+}
+
+#cleavagechart{
+    background: #ffd;
+    overflow-y: scroll;
+}
+
+#pvalue-restrictor{
+    text-align: center;
+}
+
