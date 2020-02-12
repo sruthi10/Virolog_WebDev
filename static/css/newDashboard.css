@@ -1,0 +1,25 @@
+.dashboard {
+  text-align: center;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dashcontainer {
+  padding: 1%;
+  display: inline-table;
+}
+
+.dashblock {
+  background: #E5E9F2;
+  padding: 30px;
+  width: 200px;
+  height: 90px;
+}
+
+.dashblock a {
+  color: #47525E;
+  text-align: center;
+  display: block;
+  text-decoration: none;
+}
