@@ -23,3 +23,10 @@
   display: block;
   text-decoration: none;
 }
+
+@media all and (min-width: 1060px) {
+/* CSS rules here for screens above 750px */
+    .dashboard {
+        width: 800px
+    }
+}
