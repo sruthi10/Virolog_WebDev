@@ -11,7 +11,7 @@ def get_mapping(filename, pvalue):
     df = get_csv_data(filename)
     df = df.drop(df[df.probability_of_presequence < pvalue].index)
     cleavagecountmapping = {}
-    for k, v in df.groupby(['cleavage_site']).size().to_dict().iteritems():
+    for k, v in df.groupby(['cleavage_site']).size().to_dict().items():
         numeric_key = re.match(r'[0-9]+', k.strip())
         if numeric_key:
             cleavagecountmapping[int(numeric_key.group(0))] = v
@@ -21,7 +21,7 @@ def get_mapping(filename, pvalue):
 def format_values(cleavage_mapping_virus):
     cleavage_labels = []
     cleavage_site_values = []
-    for key, value in cleavage_mapping_virus.iteritems():
+    for key, value in cleavage_mapping_virus.items():
         if key % 10 == 0:
             cleavage_labels.append(key)
         else:

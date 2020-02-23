@@ -11,14 +11,14 @@ def get_mapping(filename):
     df = get_csv_data(filename)
     mapping = df.groupby(['probability_of_presequence']).size().to_dict()
     del mapping[0]
-    orderedMapping = OrderedDict(sorted(mapping.iteritems()))
+    orderedMapping = OrderedDict(sorted(mapping.items()))
     return orderedMapping
 
 
 def format_values(mapping, pvalue):
     probability_labels = []
     probability_values = []
-    for key, value in mapping.iteritems():
+    for key, value in mapping.items():
         if key >= pvalue:
             probability_labels.append(key)
             probability_values.append(value)
