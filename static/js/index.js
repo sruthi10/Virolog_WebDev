@@ -200,22 +200,15 @@ function drawPieTaxonomy(){
 // Builds the HTML Table out of myList
 function buildHtmlTable(selector) {
   $.getJSON( "/getAllVirusTaxonomyData", function(jsondata){
-			var body$ = $('#tableBody');
-      // addAllColumnHeaders(jsondata, selector);
-
-		  var cols = Object.values(jsondata);
-      var data = Object.values(cols);
-      for (var i = 0; i < data.length; i++) {
-				var bodyTr$ = $('<tr/>');
-				var row = Object.values(data[i]);
-				console.log(data[i]);
-				for (var j = 0; j < row.length; j++) {
-					cols.push(row[j]);
-					bodyTr$.prepend($('<td/>').html(row[j]));
-				}
-				body$.append(bodyTr$);
-	    }
-      //$("#taxTable").append(body$);
+      console.log(jsondata);
+      $(selector).DataTable( {
+          data: jsondata,
+          columns: [
+              { title: "Sequence ID"},
+              { title: "Domain"},
+              { title: "Group" }
+          ]
+      });
 	});
 }
 
