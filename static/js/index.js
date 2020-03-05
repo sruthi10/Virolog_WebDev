@@ -203,7 +203,7 @@ function drawPieTaxonomy(){
                             // add tag back to graph and table
                             meta.data[index].hidden=false;
                             var label = meta.data[index]._model.label;
-                            filteredViralTax = filteredViralTax.filter(x => !x.localeCompare(label))
+                            filteredViralTax = filteredViralTax.filter(x => !x.includes(label))
                             console.log(filteredViralTax)
 
                         } else {
