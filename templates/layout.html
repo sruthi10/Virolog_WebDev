@@ -12,98 +12,59 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
       
-    <!-- MDBootstrap Datatables  -->
+    <!-- MDBootstrap Datatables  -->    
     <link href="{{url_for('static', filename='css/datatables.min.css')}}" rel="stylesheet">
     
-    
     <!-- Custom styles for this template -->
-    <link href="{{url_for('static', filename='css/dashboard.css')}}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/dashboard.css')}}">
     <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/index.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/layout.css')}}">
   </head>
 
   <body>
-    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">ViralAnalysis</a>
-      <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-    </nav>
 
     <div class="container-fluid">
-      <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-          <div class="sidebar-sticky">
-            <ul class="nav flex-column">
-              <li class="nav-item">
-                <a class="nav-link active" href="/">
-                  <span data-feather="home"></span>
-                  Dashboard <span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="cleavagesites">
-                  <span data-feather="bar-chart-2"></span>
-                  Cleavage Sites
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="presequenceprobability">
-                  <span data-feather="bar-chart-2"></span>
-                  Presequence Probability
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="virusTaxonomy">
-                  <span data-feather="bar-chart-2"></span>
-                  Viral Taxonomy Distribution
-                </a>
-              </li>
-            </ul>
-
-            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-              <span>Filters</span>
-              <a class="d-flex align-items-center text-muted" href="#">
-                <span data-feather="plus-circle"></span>
-              </a>
-            </h6>
-            <ul class="nav flex-column mb-2">
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="filter"></span>
-                  Filter1
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="filter"></span>
-                  Filter2
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="filter"></span>
-                  Filter3
-                </a>
-              </li>
-            </ul>
-          </div>
+    <div class="sidebar">
+        <div class="logo">
+          <a href="/">ViralAnalysis</a>
+        </div>
+        <nav class="navigation">
+          <ul class="mainmenu">
+            <li><a href="/">Mito-ViroLogs</a>
+              <ul class="submenu">
+                <li><a href="cleavagesites">Cleavage Sites</a></li>
+                <li><a href="presequenceprobability">Probability Presequence</a></li>
+              </ul>
+            </li>
+            <li><a href="/">ViroLogs</a></li>
+            <li><a href="/">Gene Expression-ViroLogs</a></li>
+            <li><a href="/">Word++</a></li>
+            <li><a href="virusTaxonomy">Viral Taxonomy Distribution</a></li>
+            <li><a href="/">Retrieve Data</a></li>
+          </ul>
         </nav>
+    </div>
+    </div>
+      
+    <main role="main" class="maincontent">
+      <div class="border-bottom">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
+          <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
 
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-            <h1 class="h2">Dashboard</h1>
-            <div class="btn-toolbar mb-2 mb-md-0">
-              <div class="btn-group mr-2">
-                <button class="btn btn-sm btn-outline-secondary">Share</button>
-                <button class="btn btn-sm btn-outline-secondary">Export</button>
-              </div>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+              <button class="btn btn-sm btn-outline-secondary">Share</button>
+              <button class="btn btn-sm btn-outline-secondary">Export</button>
             </div>
           </div>
-
-          {% block content %}
-          {% endblock %}
-        
-        </main>
+        </div>
+        <h1 class="h2">{% block header %}{% endblock %}</h1>
       </div>
-    </div>
+      
+      {% block content %}
+      {% endblock %}
+
+    </main>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -123,8 +84,9 @@
     </script>
 
     <!-- Graphs -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-    <script src="https://npmcdn.com/Chart.Zoom.js@latest/Chart.Zoom.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4"></script>
     <script type="text/javascript" src="{{url_for('static',filename='js/Chart.PieceLabel.min.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static',filename='js/index.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static',filename='js/sorttable.js')}}"></script>
