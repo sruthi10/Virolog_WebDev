@@ -1,7 +1,14 @@
 from flask import Flask, render_template, jsonify
 from genedata import cleavage_sites, presequence_probability, virus_taxonomy
+from werkzeug.routing import FloatConverter as BaseFloatConverter
 
 app = Flask(__name__)
+
+class FloatConverter(BaseFloatConverter):
+    regex = r'-?\d+(\.\d+)?'
+
+# before routes are registered
+app.url_map.converters['float'] = FloatConverter
 
 
 @app.route('/getcleavagesitesdata/<float:pvalue>')
@@ -31,8 +38,8 @@ def getCleavageSitesData(pvalue):
     return jsonify(jsonData)
 
 
-@app.route('/getPresequenceProbabilityData/<float:pvalue>')
-def getPresequenceProbabilityData(pvalue):
+@app.route('/getPresequenceProbabilityData/<float:pvalueMin>/<float:pvalueMax>')
+def getPresequenceProbabilityData(pvalueMin, pvalueMax):
     probability_mapping_virus = presequence_probability.get_mapping(
         r'genedata/outputdata/mitofates_viral_cleaned.csv')
     probability_mapping_virus_mapping_human = presequence_probability.get_mapping(
@@ -41,13 +48,13 @@ def getPresequenceProbabilityData(pvalue):
         r'genedata/outputdata/mitofatesResults_Mouse.MitoCarta2.0-cleaned.csv')
 
     probability_labels_virus, probability_site_values_virus = \
-        presequence_probability.format_values(probability_mapping_virus, pvalue)
+        presequence_probability.format_values(probability_mapping_virus, pvalueMin, pvalueMax)
     probability_labels_human, probability_site_values_human = \
         presequence_probability.format_values(
-            probability_mapping_virus_mapping_human, pvalue)
+            probability_mapping_virus_mapping_human, pvalueMin, pvalueMax)
     probability_labels_mouse, probability_site_values_mouse = \
         presequence_probability.format_values(
-            probability_mapping_virus_mapping_mouse, pvalue)
+            probability_mapping_virus_mapping_mouse, pvalueMin, pvalueMax)
 
     jsonData = {
         'probabilitymappinglabels': probability_labels_human,

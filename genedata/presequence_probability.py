@@ -15,11 +15,11 @@ def get_mapping(filename):
     return orderedMapping
 
 
-def format_values(mapping, pvalue):
+def format_values(mapping, pvalueMin, pvalueMax):
     probability_labels = []
     probability_values = []
     for key, value in mapping.items():
-        if key >= pvalue:
+        if key >= pvalueMin and key <= pvalueMax:
             probability_labels.append(key)
             probability_values.append(value)
 

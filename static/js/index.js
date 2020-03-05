@@ -1,3 +1,4 @@
+var currentChart;
 
 function drawChart(pvalue = 0.5) {
     var ctx = document.getElementById("myChart").getContext('2d');
@@ -71,14 +72,17 @@ function drawChart(pvalue = 0.5) {
     });
 }
 
-function drawChartProbability(pvalue = 0.5) {
+function drawChartProbability(pvalueMin = 0.5, pvalueMax = 1.0) {
     var ctx = document.getElementById("myChart").getContext('2d');
-    $.getJSON( "/getPresequenceProbabilityData/" + pvalue, function(jsondata){
+    $.getJSON( "/getPresequenceProbabilityData/" + pvalueMin + "/" + pvalueMax, function(jsondata){
         var probabilityvaluesvirus = jsondata["probabilityvaluesvirus"];
         var probabilityvalueshuman = jsondata["probabilityvalueshuman"];
         var probabilityvaluesmouse = jsondata["probabilityvaluesmouse"];
         var probabilitylabels = jsondata["probabilitymappinglabels"];
-        new Chart(ctx, {
+        if (currentChart) {
+          currentChart.destroy();
+        }
+        currentChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: probabilitylabels,
@@ -99,46 +103,28 @@ function drawChartProbability(pvalue = 0.5) {
                         borderColor: 'rgba(15, 173, 0, 1)',
                         fill: false
                     }]
-                },
-                options: {
-              scales: {
-                yAxes: [{
-                  scaleLabel: {
-                    display: true,
-                    labelString: 'Number of Genes'
-                }
-            }],
-            xAxes: [{
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Probability'
-                },
-							  ticks: {
-									callback: function(value) {
-										return value.toFixed(2); //truncate
-									}
-								}
-            }]
-        },
-        pan: {
-                // Boolean to enable panning
-                enabled: true,
-
-                // Panning directions. Remove the appropriate direction to disable
-                // Eg. 'y' would only allow panning in the y direction
-                mode: 'xy'
             },
-
-                // Container for zoom options
-        zoom: {
-                // Boolean to enable zooming
-                enabled: true,
-
-                // Zooming directions. Remove the appropriate direction to disable
-                // Eg. 'y' would only allow zooming in the y direction
-                mode: 'y',
-            }
-        },
+            options: {
+               scales: {
+                 yAxes: [{
+                   scaleLabel: {
+                     display: true,
+                     labelString: 'Number of Genes'
+                   }
+                 }],
+                 xAxes: [{
+                     scaleLabel: {
+                         display: true,
+                         labelString: 'Probability'
+                     },
+                     ticks: {
+                       callback: function(value) {
+                         return value.toFixed(2); //truncate
+                       }
+                     }
+                 }]
+               },
+            },
         });
     });
     $("#probability-play").hide();
