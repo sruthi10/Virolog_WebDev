@@ -202,15 +202,21 @@ function drawPieTaxonomy(){
                         if(CurrentalreadyHidden){
                             // add tag back to graph and table
                             meta.data[index].hidden=false;
-                            console.log(filteredViralTax)
                             var label = meta.data[index]._model.label;
-                            filteredViralTax = filteredViralTax.filter(function(x) { return x != label})
+                            filteredViralTax = filteredViralTax.filter(x => !x.localeCompare(label))
+                            console.log(filteredViralTax)
+
                         } else {
                             meta.data[index].hidden=true;
                             var label = meta.data[index]._model.label;
                             filteredViralTax.push(`'`+label+`'`);
+                            console.log(filteredViralTax)
+
                          }
                         ci.update();
+                        if (filteredViralTax.length == 0) {
+                            filteredViralTax = ["''"]
+                        }
                         buildHtmlTable('#taxTable');
                     }
                 }
