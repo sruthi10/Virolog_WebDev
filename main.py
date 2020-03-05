@@ -85,6 +85,9 @@ def getVirusTaxonomyData():
 def getAllVirusTaxonomyData():
     return jsonify(virus_taxonomy.getTaxonomyData())
 
+@app.route('/getFilteredVirusTaxonomyData/<filteredList>')
+def getFilteredVirusTaxonomyData(filteredList):
+    return jsonify(virus_taxonomy.getTaxonomyData(filteredList))
 
 @app.route('/virusTaxonomy')
 def virusTaxonomyView():

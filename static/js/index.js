@@ -1,4 +1,5 @@
 var currentChart;
+var filteredViralTax = ["''"];
 
 function drawChart(pvalue = 0.5) {
     var ctx = document.getElementById("myChart").getContext('2d');
@@ -190,6 +191,28 @@ function drawPieTaxonomy(){
                           return luminance > threshold ? 'black' : 'white';
                         },
                     precision: 2
+                }, legend: {
+                onClick:
+                    function(e, legendItem) {
+                        var index = legendItem.index;
+                        var ci = this.chart;
+                        var meta = ci.getDatasetMeta(0);
+                        var CurrentalreadyHidden = (meta.data[index].hidden==null) ? false : (meta.data[index].hidden);
+                        
+                        if(CurrentalreadyHidden){
+                            // add tag back to graph and table
+                            meta.data[index].hidden=false;
+                            console.log(filteredViralTax)
+                            var label = meta.data[index]._model.label;
+                            filteredViralTax = filteredViralTax.filter(function(x) { return x != label})
+                        } else {
+                            meta.data[index].hidden=true;
+                            var label = meta.data[index]._model.label;
+                            filteredViralTax.push(`'`+label+`'`);
+                         }
+                        ci.update();
+                        buildHtmlTable('#taxTable');
+                    }
                 }
             }
         });        
@@ -199,9 +222,12 @@ function drawPieTaxonomy(){
 
 // Builds the HTML Table out of myList
 function buildHtmlTable(selector) {
-  $.getJSON( "/getAllVirusTaxonomyData", function(jsondata){
-      console.log(jsondata);
+  $.getJSON( "/getFilteredVirusTaxonomyData/(" + filteredViralTax.join(",") + ")", function(jsondata){
+      if ($.fn.dataTable.isDataTable(selector)) {
+          $(selector).DataTable().destroy();
+      }
       $(selector).DataTable( {
+          destroy: true,
           data: jsondata,
           columns: [
               { title: "Sequence ID"},

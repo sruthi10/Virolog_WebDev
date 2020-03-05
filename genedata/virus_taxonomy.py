@@ -32,7 +32,7 @@ def getTaxonomyDistribution():
 def getTaxonomyData(filteredList = '("")'):
     """Get specific taxonomy data for each virus"""
     df = get_db_data(
-        'select `sequence_id`, `domain`, `group` from gene_taxonomy where `group` not in {} limit 20'.format(filteredList))
+        'select `sequence_id`, `domain`, `group` from gene_taxonomy where `group` not in {} limit 50'.format(filteredList))
     tax_data = []
     for row in df.itertuples():
         tax_key = getattr(row, 'sequence_id')
