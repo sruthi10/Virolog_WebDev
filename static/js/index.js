@@ -1,6 +1,10 @@
 var currentChart;
 var filteredViralTax = ["''"];
 
+$(document).ready(function() {
+    $("#viral-list").hide();
+});
+
 function drawChart(pvalue = 0.5) {
     var ctx = document.getElementById("myChart").getContext('2d');
     $.getJSON( "/getcleavagesitesdata/" + pvalue, function(jsondata){
@@ -229,6 +233,7 @@ function drawPieTaxonomy(){
 // Builds the HTML Table out of myList
 function buildHtmlTable(selector) {
   $.getJSON( "/getFilteredVirusTaxonomyData/(" + filteredViralTax.join(",") + ")", function(jsondata){
+      $("#viral-list").show();
       if ($.fn.dataTable.isDataTable(selector)) {
           $(selector).DataTable().destroy();
       }
