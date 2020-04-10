@@ -1,6 +1,7 @@
 import pandas as pd
 import pymysql
 import pymysql.cursors
+import sys # only need to printing to console
 
 
 def get_db_data(query):
@@ -10,7 +11,7 @@ def get_db_data(query):
                                  db='viralanalysisdb',
                                  cursorclass=pymysql.cursors.DictCursor)
     df = pd.read_sql(query, connection)
-    return df
+    return df 
 
 
 def getTaxonomyDistribution():
@@ -41,6 +42,30 @@ def getTaxonomyData(filteredList = '("")'):
         tax_data.append( [tax_key, tax_domain, tax_group] )
     return tax_data
 		
+def newGetTaxonomyData(args, filteredList = '("")'):
+    """Get specific taxonomy data for each virus"""
+    df = get_db_data(
+        'select `sequence_id`, `domain`, `group` from gene_taxonomy where `group` not in {} limit {} offset {}'.format(filteredList, args["length"], args["start"]))
+    total_size = get_db_data(
+        'select COUNT(`sequence_id`) as count from gene_taxonomy')
+    filtered_size = get_db_data(
+        'select COUNT(`sequence_id`) as count from gene_taxonomy where `group` not in {}'.format(filteredList))
+    print(filtered_size['count'][0], file=sys.stderr)
+    print(total_size['count'][0], file=sys.stderr)
+    tax_data = []
+    for row in df.itertuples():
+        tax_key = getattr(row, 'sequence_id')
+        tax_domain = getattr(row, 'domain')
+        tax_group = getattr(row, 'group')
+        tax_data.append( [tax_key, tax_domain, tax_group] )
+    data = {
+        "draw": args["draw"],
+        "recordsTotal": int(total_size['count'][0]),
+        "recordsFiltered": int(filtered_size['count'][0]),
+        "data": tax_data
+    }
+    return data
+    
 def format_taxonomy(virus_taxonomy_distribution):
     """Return the formatted values to be sent to charting library in json format.
 

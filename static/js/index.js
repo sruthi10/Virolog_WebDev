@@ -1,10 +1,6 @@
 var currentChart;
 var filteredViralTax = ["''"];
 
-$(document).ready(function() {
-    $("#viral-list").hide();
-});
-
 function drawChart(pvalue = 0.5) {
     var ctx = document.getElementById("myChart").getContext('2d');
     $.getJSON( "/getcleavagesitesdata/" + pvalue, function(jsondata){
@@ -176,7 +172,7 @@ function hexToRgb(hex) {
 function drawPieTaxonomy(){
     var ctx = document.getElementById("myChart-viral-taxonomy").getContext('2d');
     $.getJSON( "/getVirusTaxonomyData", function(jsondata){
-        new Chart(ctx, {
+        currentChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 datasets: [{
@@ -228,25 +224,42 @@ function drawPieTaxonomy(){
         });        
     });
     $("#viral-taxonomy-play").hide();
+    $("div").removeClass('hidden');;
+    $("#viral-list").removeClass('hidden');;
+}
+
+function viralTaxSelectAll() {
+    currentChart.getDatasetMeta(0).data.forEach(function(ds) {
+        ds.hidden = false;
+    });
+    filteredViralTax = ["''"]
+    currentChart.update();
+    buildHtmlTable('#taxTable');
+}
+
+function viralTaxDeselectAll() {
+    filteredViralTax = ["''"]
+    currentChart.getDatasetMeta(0).data.forEach(function(ds) {
+        ds.hidden = true;
+        filteredViralTax.push(`'`+ds._model.label+`'`)
+    });
+    currentChart.update();
+    buildHtmlTable('#taxTable');
 }
 
 // Builds the HTML Table out of myList
 function buildHtmlTable(selector) {
-  $.getJSON( "/getFilteredVirusTaxonomyData/(" + filteredViralTax.join(",") + ")", function(jsondata){
-      $("#viral-list").show();
-      if ($.fn.dataTable.isDataTable(selector)) {
-          $(selector).DataTable().destroy();
-      }
-      $(selector).DataTable( {
-          destroy: true,
-          data: jsondata,
-          columns: [
-              { title: "Sequence ID"},
-              { title: "Domain"},
-              { title: "Group" }
-          ]
-      });
-	});
+    $(selector).DataTable( {
+        processing: true,
+        serverSide: true,
+        ajax: "/filteredTaxonomyData/(" + filteredViralTax.join(",") + ")",
+        destroy: true,
+        columns: [
+            { title: "Sequence ID"},
+            { title: "Domain"},
+            { title: "Group" }
+        ]
+    });
 }
 
 // Adds a header row to the table and returns the set of columns.

@@ -1,6 +1,7 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 from genedata import cleavage_sites, presequence_probability, virus_taxonomy
 from werkzeug.routing import FloatConverter as BaseFloatConverter
+import sys # only need to printing to console
 
 app = Flask(__name__)
 
@@ -88,6 +89,11 @@ def getAllVirusTaxonomyData():
 @app.route('/getFilteredVirusTaxonomyData/<filteredList>')
 def getFilteredVirusTaxonomyData(filteredList):
     return jsonify(virus_taxonomy.getTaxonomyData(filteredList))
+
+@app.route('/filteredTaxonomyData/<filteredList>')
+def getFilteredTaxonomyData(filteredList):
+    print(request.args, file=sys.stderr)
+    return jsonify(virus_taxonomy.newGetTaxonomyData(request.args, filteredList))
 
 @app.route('/virusTaxonomy')
 def virusTaxonomyView():

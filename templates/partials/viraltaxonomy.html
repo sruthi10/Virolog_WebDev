@@ -4,6 +4,12 @@
 {% block content %}
             <div class="chartWrapper-viral-taxonomy" id="taxonomy-distribution">
               <button id="viral-taxonomy-play" class="btn btn-success"><i class="fas fa-play"></i> Draw</button>
+              <div class="hidden" style="text-align: center">
+                  <div style="display:inline-block">
+                      <button id="select-all" type="button">Select All</button>
+                      <button id="deselect-all" type="button">Deselect All</button>
+                  </div>
+              </div>
               <div class="chartAreaWrapper-viral-taxonomy">
                 <div class="chartAreaWrapper2-viral-taxonomy">
                   <canvas id="myChart-viral-taxonomy"></canvas>
@@ -12,7 +18,7 @@
               <canvas id="myChartAxis-viral-taxonomy" height="10" width="0"></canvas>
             </div>
 
-            <h2 id="viral-list">Virolog List</h2>
+            <h2 id="viral-list" class="hidden">Virolog List</h2>
             <table id="taxTable" class="display" style="width:100%">
             </table>
 {% endblock %}
@@ -21,5 +27,11 @@
     $('#viral-taxonomy-play').on('click', function(){
       drawPieTaxonomy(); 
       buildHtmlTable('#taxTable');
+    });
+    $('#select-all').on('click', function(){
+      viralTaxSelectAll(); 
+    });
+    $('#deselect-all').on('click', function(){
+      viralTaxDeselectAll(); 
     });
 {% endblock %}
