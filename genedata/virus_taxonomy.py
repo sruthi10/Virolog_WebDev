@@ -26,7 +26,7 @@ def getTaxonomyDistribution():
         'select `group`, COUNT(`group`) as taxocount from gene_taxonomy group by `group`')
     taxonomy_distrubution = {}
     for row in df.itertuples():
-        taxonomy_key = format_group(row[1].strip())
+        taxonomy_key = format_string(row[1].strip())
         taxonomy_distrubution[taxonomy_key] = int(row[2])
     return taxonomy_distrubution
 
@@ -37,26 +37,31 @@ def getTaxonomyData(filteredList = '("")'):
     tax_data = []
     for row in df.itertuples():
         tax_key = getattr(row, 'sequence_id')
-        tax_domain = getattr(row, 'domain')
-        tax_group = format_group(getattr(row, 'group'))
+        tax_domain = format_string(getattr(row, 'domain'))
+        tax_group = format_string(getattr(row, 'group'))
         tax_data.append( [tax_key, tax_domain, tax_group] )
     return tax_data
 		
 def newGetTaxonomyData(args, filteredList = '("")'):
     """Get specific taxonomy data for each virus"""
+    orderby = "`sequence_id`"
+    if args["order[0][column]"] is '1':
+        orderby = "`domain`"
+    elif args["order[0][column]"] is '2':
+        orderby = "`group`"
     df = get_db_data(
-        'select `sequence_id`, `domain`, `group` from gene_taxonomy where `group` not in {} limit {} offset {}'.format(filteredList, args["length"], args["start"]))
+        'select `sequence_id`, `domain`, `group` from gene_taxonomy where `group` not in {} AND (`sequence_id` LIKE "%{}%" OR `domain` LIKE "%{}%" OR `group` LIKE "%{}%") order by {} {} limit {} offset {}'.format(filteredList, args["search[value]"], args["search[value]"], args["search[value]"], orderby, args["order[0][dir]"], args["length"], args["start"]))
     total_size = get_db_data(
         'select COUNT(`sequence_id`) as count from gene_taxonomy')
     filtered_size = get_db_data(
-        'select COUNT(`sequence_id`) as count from gene_taxonomy where `group` not in {}'.format(filteredList))
+        'select COUNT(`sequence_id`) as count from gene_taxonomy where `group` not in {} AND (`sequence_id` LIKE "%{}%" OR `domain` LIKE "%{}%" OR `group` LIKE "%{}%")'.format(filteredList, args["search[value]"], args["search[value]"], args["search[value]"]))
     print(filtered_size['count'][0], file=sys.stderr)
     print(total_size['count'][0], file=sys.stderr)
     tax_data = []
     for row in df.itertuples():
         tax_key = getattr(row, 'sequence_id')
-        tax_domain = getattr(row, 'domain')
-        tax_group = format_group(getattr(row, 'group'))
+        tax_domain = format_string(getattr(row, 'domain'))
+        tax_group = format_string(getattr(row, 'group'))
         tax_data.append( [tax_key, tax_domain, tax_group] )
     data = {
         "draw": args["draw"],
@@ -80,7 +85,7 @@ def format_taxonomy(virus_taxonomy_distribution):
 
     return labels, values
 
-def format_group(group):
+def format_string(group):
     new_group = group[0].upper() + group[1:]
     if "DsDNA" in new_group or "DsRNA" in new_group or "SsDNA" in new_group or "SsRNA" in new_group:
         new_group = group
