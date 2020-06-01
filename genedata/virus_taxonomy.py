@@ -26,7 +26,7 @@ def getTaxonomyDistribution():
         'select `group`, COUNT(`group`) as taxocount from gene_taxonomy group by `group`')
     taxonomy_distrubution = {}
     for row in df.itertuples():
-        taxonomy_key = row[1].strip()
+        taxonomy_key = format_group(row[1].strip())
         taxonomy_distrubution[taxonomy_key] = int(row[2])
     return taxonomy_distrubution
 
@@ -38,7 +38,7 @@ def getTaxonomyData(filteredList = '("")'):
     for row in df.itertuples():
         tax_key = getattr(row, 'sequence_id')
         tax_domain = getattr(row, 'domain')
-        tax_group = getattr(row, 'group')
+        tax_group = format_group(getattr(row, 'group'))
         tax_data.append( [tax_key, tax_domain, tax_group] )
     return tax_data
 		
@@ -56,7 +56,7 @@ def newGetTaxonomyData(args, filteredList = '("")'):
     for row in df.itertuples():
         tax_key = getattr(row, 'sequence_id')
         tax_domain = getattr(row, 'domain')
-        tax_group = getattr(row, 'group')
+        tax_group = format_group(getattr(row, 'group'))
         tax_data.append( [tax_key, tax_domain, tax_group] )
     data = {
         "draw": args["draw"],
@@ -79,6 +79,12 @@ def format_taxonomy(virus_taxonomy_distribution):
         values.append(virus_taxonomy_distribution[key])
 
     return labels, values
+
+def format_group(group):
+    new_group = group[0].upper() + group[1:]
+    if "DsDNA" in new_group or "DsRNA" in new_group or "SsDNA" in new_group or "SsRNA" in new_group:
+        new_group = group
+    return new_group
 
 
 if __name__ == '__main__':
