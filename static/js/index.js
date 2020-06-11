@@ -171,7 +171,7 @@ function hexToRgb(hex) {
 
 function drawPieTaxonomy(){
     var ctx = document.getElementById("myChart-viral-taxonomy").getContext('2d');
-    $.getJSON( "/getVirusTaxonomyData", function(jsondata){
+    $.getJSON( "/getTaxonomyDistribution", function(jsondata){
         currentChart = new Chart(ctx, {
             type: 'doughnut',
             data: {

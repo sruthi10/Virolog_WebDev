@@ -163,14 +163,14 @@ def virusTaxonomyView():
     """
     return render_template('partials/viraltaxonomy.html')
 
-@app.route('/getVirusTaxonomyData')
+@app.route('/getTaxonomyDistribution')
 def getVirusTaxonomyData():
-    """Fetches all the viral tax data to be displayed
+    """Fetches the initial viral tax distribution to be displayed in the pie chart
 
     Returns
     -------
     flask.Response()
-        an object with content-type header 'application/json' that contains viral tax labels and data
+        an object with content-type header 'application/json' that contains viral tax labels and counts
     """
     virus_taxonomy_distribution = virus_taxonomy.getTaxonomyDistribution()
     label, values = virus_taxonomy.format_taxonomy(virus_taxonomy_distribution)
@@ -191,7 +191,7 @@ def getFilteredTaxonomyData(filteredList):
         an object with content-type header 'application/json' that contains viral tax labels and data, not including the labels listed in filteredList
     """
     print(request.args, file=sys.stderr)
-    return jsonify(virus_taxonomy.newGetTaxonomyData(request.args, filteredList))
+    return jsonify(virus_taxonomy.getFilteredTaxonomyData(request.args, filteredList))
 
 
 if __name__ == '__main__':

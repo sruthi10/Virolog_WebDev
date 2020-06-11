@@ -1,3 +1,16 @@
+"""
+Viral Taxonomy Controller
+
+Functions that fetch and manipulate data necessary for the Viral Taxonomy page go here.
+
+The following functions are available:
+    * get_db_data - function required to interact with db
+    * getTaxonomyData - get viral tax distribution data
+    * getFilteredTaxonomyData - get filtered viral tax data based on list
+    * format_taxonomy - helper function to separate labels and data
+    * format_string - helper function to make sure DNA labels are correctly formatted
+"""
+
 import pandas as pd
 import pymysql
 import pymysql.cursors
@@ -15,12 +28,12 @@ def get_db_data(query):
 
 
 def getTaxonomyDistribution():
-    """Get the virus taxonomy distribution.
+    """Get the virus taxonomy distribution - the count for each group in the taxonomy data.
 
-    Accesses the database to retrieve the gene_taxonomy data and returns the
-    virus type distribution.
-
-    :return: Dictionary of virustype:count
+    Returns
+    -------
+    dict
+        a dictionary with label = group, data = count(group)
     """
     df = get_db_data(
         'select `group`, COUNT(`group`) as taxocount from gene_taxonomy group by `group`')
@@ -30,20 +43,21 @@ def getTaxonomyDistribution():
         taxonomy_distrubution[taxonomy_key] = int(row[2])
     return taxonomy_distrubution
 
-def getTaxonomyData(filteredList = '("")'):
-    """Get specific taxonomy data for each virus"""
-    df = get_db_data(
-        'select `sequence_id`, `domain`, `group` from gene_taxonomy where `group` not in {} limit 50'.format(filteredList))
-    tax_data = []
-    for row in df.itertuples():
-        tax_key = getattr(row, 'sequence_id')
-        tax_domain = format_string(getattr(row, 'domain'))
-        tax_group = format_string(getattr(row, 'group'))
-        tax_data.append( [tax_key, tax_domain, tax_group] )
-    return tax_data
-		
-def newGetTaxonomyData(args, filteredList = '("")'):
-    """Get specific taxonomy data for each virus"""
+def getFilteredTaxonomyData(args, filteredList = '("")'):
+    """Get the filtered virus taxonomy data where group isn't in filteredList
+    
+    Parameters
+    ----------
+    args : dict
+        a dictionary containing args from datatables required to sort/ filter data
+    filteredList : string
+        list in string format representing labels to not include in return
+
+    Returns
+    -------
+    dict
+        a dictionary with the filtered viral data formatted as needed to work with datatables
+    """
     orderby = "`sequence_id`"
     if args["order[0][column]"] is '1':
         orderby = "`domain`"
@@ -71,11 +85,19 @@ def newGetTaxonomyData(args, filteredList = '("")'):
     }
     return data
     
+
 def format_taxonomy(virus_taxonomy_distribution):
     """Return the formatted values to be sent to charting library in json format.
 
-    :param virus_taxonomy_distribution: dictionary of virus taxonomy distribution
-    :return: Two lists: labels and values
+    Parameters
+    ----------
+    virus_taxonomy_distribution : dict
+        dictionary of virus taxonomy distribution
+    
+    Returns
+    -------
+    list, list 
+        labels and values formatted in two different lists
     """
     labels = []
     values = []
@@ -86,6 +108,18 @@ def format_taxonomy(virus_taxonomy_distribution):
     return labels, values
 
 def format_string(group):
+    """Return the string formated as described: capitalize first letter of label unless it's a DNA or RNA label
+
+    Parameters
+    ----------
+    group : string
+        string that requires formatting
+    
+    Returns
+    -------
+    string 
+        group in the proper formatting
+    """
     new_group = group[0].upper() + group[1:]
     if "DsDNA" in new_group or "DsRNA" in new_group or "SsDNA" in new_group or "SsRNA" in new_group:
         new_group = group
