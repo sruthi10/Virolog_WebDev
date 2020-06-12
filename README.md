@@ -14,37 +14,38 @@ Focuses on:
 Goal of the project is to provide interactive application for user to access data analysis of entire Viral Proteome based on orthologs to Human Proteins, Localization, ISG and various filters probability of being mitochondrial protein, number of cleavage sites, probability of being Trans-membrane protein to obtain complete list of viral protein information (including Accession ID, Protein Name, Probability of Mitochondrial signal, Virus Type). This would help researchers acquire viral proteins that mimic the host (human) mitochondrial localized proteins.
 
 ## Code Structure
-**Virolog_WebDev**  
-|-- **documentation**  
+<pre>
+<strong>Virolog_WebDev</strong>  
+|-- <strong>documentation</strong>  
 	+-- ViralAnalysisWebAppArchitecture.jpg  
-|-- **filters**  
-	|-- **isg**  
+|-- <strong>filters</strong>  
+	|-- <strong>isg</strong>  
 		+-- files pertaining to isg filter  
-	|-- **mitofates**  
+	|-- <strong>mitofates</strong>  
 		+-- files pertaining to mitofates filter  
-	|-- **tmhmm**  
+	|-- <strong>tmhmm</strong>  
 		+-- files pertaining to tmhmm filter  
-	|-- **word++**  
+	|-- <strong>word++</strong>  
 		+-- files pertaining to word++ filter  
 	|-- cleanCsvResults.py  
 	|-- tmhmm_mitofates_viralResults.csv  
 	|-- tmhmm_mitofates_viralShortResults.csv  
 	+-- tmhmmMitofatesComparison.py  
-|-- **genedata**  
-	|-- **csvdata**  
+|-- <strong>genedata</strong>  
+	|-- <strong>csvdata</strong>  
 		|-- gene_taxonomy.csv  
 		|-- mitofates_viral1.csv  
 		|-- mitofatesResults_Human.MitoCarta2.0.csv  
 		+-- mitofatesResults_Mouse.MitoCarta2.0.csv  
-	|-- **data**  
+	|-- <strong>data</strong>  
 		|-- gene_identifiers.txt  
 		|-- mitofatesResults_Human.MitoCarta2.0.xlsx  
 		|-- mitofatesResults_Mouse.MitoCarta2.0.xlsx  
 		|-- mitofatesResults_viral1.xlsx  
 		+-- mitofatesResults_viral2.xlsx  
-	|-- **databasedumps**  
+	|-- <strong>databasedumps</strong>  
 		+-- viralanalysisdb2018.sql  
-	|-- **outputdata**  
+	|-- <strong>outputdata</strong>  
 		|-- gene_taxonomy.csv  
 		|-- mitofates_viral_cleaned.csv  
 		|-- mitofates_viral1-cleaned2.csv  
@@ -55,23 +56,23 @@ Goal of the project is to provide interactive application for user to access dat
 	|-- presequence_probability.py  
 	|-- protein_info.py  
 	+-- virus_taxonomy.py  
-|-- **HeatMapGeneration**  
+|-- <strong>HeatMapGeneration</strong>  
 	|-- example_heat_map.html  
 	|-- geneExpressionData_test.csv  
 	|-- geneExpressionData.csv  
 	|-- heat_map.py  
 	|-- README.md  
 	+-- requirements.txt  
-|-- **static**  
-	|-- **css**  
+|-- <strong>static</strong>  
+	|-- <strong>css</strong>  
 		|-- dashboard.css  
 		|-- index.css  
 		+-- layout.css  
-	|-- **js**  
+	|-- <strong>js</strong>  
 		|-- datatables.min.js  
 		+-- index.js  
-|-- **templates**  
-	|-- **partials**  
+|-- <strong>templates</strong>  
+	|-- <strong>partials</strong>  
 		|-- cleavagesites.html  
 		|-- presequenceprobability.html  
 		+-- viraltaxonomy.html  
@@ -82,6 +83,7 @@ Goal of the project is to provide interactive application for user to access dat
 |-- main.py  
 |-- README.md  
 +-- requirements.txt  
+</pre>
 
 ## Deployment
 
