@@ -66,11 +66,11 @@ Goal of the project is to provide interactive application for user to access dat
 |-- <strong>static</strong>  
     |-- <strong>css</strong>  
         |-- dashboard.css  
-	    |-- index.css  
-	    +-- layout.css  
+	|-- index.css  
+	+-- layout.css  
     |-- <strong>js</strong>  
         |-- datatables.min.js  
-	    +-- index.js  
+	+-- index.js  
 |-- <strong>templates</strong>  
     |-- <strong>partials</strong>  
         |-- cleavagesites.html  
