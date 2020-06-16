@@ -49,11 +49,11 @@ def get_mapping(filename, pvalue):
         numeric_key = re.match(r'[0-9]+', k.strip())
         if numeric_key:
             cleavagecountmapping[int(numeric_key.group(0))] = v
-            return cleavagecountmapping
+    return cleavagecountmapping
 
 
-        def format_values(cleavage_mapping_virus):
-            """Format mapping to separate mapping into labels and values
+def format_values(cleavage_mapping_virus):
+    """Format mapping to separate mapping into labels and values
 
     Parameters
     ----------
@@ -65,13 +65,13 @@ def get_mapping(filename, pvalue):
     list, list
         labels and values for the cleavage sites and counts after being formatted
     """
-            cleavage_labels = []
-            cleavage_site_values = []
-            for key, value in cleavage_mapping_virus.items():
-                if key % 10 == 0:
-                    cleavage_labels.append(key)
-                    else:
-                        cleavage_labels.append('')
-                        cleavage_site_values.append(value)
+    cleavage_labels = []
+    cleavage_site_values = []
+    for key, value in cleavage_mapping_virus.items():
+        if key % 10 == 0:
+            cleavage_labels.append(key)
+        else:
+            cleavage_labels.append('')
+            cleavage_site_values.append(value)
 
-                        return cleavage_labels, cleavage_site_values
+    return cleavage_labels, cleavage_site_values

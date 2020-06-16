@@ -74,4 +74,4 @@ def format_values(mapping, pvalueMin, pvalueMax):
             probability_labels.append(key)
             probability_values.append(value)
 
-            return probability_labels, probability_values
+    return probability_labels, probability_values

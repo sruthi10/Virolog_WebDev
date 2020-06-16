@@ -53,10 +53,10 @@ def getTaxonomyDistribution():
     for row in df.itertuples():
         taxonomy_key = format_string(row[1].strip())
         taxonomy_distrubution[taxonomy_key] = int(row[2])
-        return taxonomy_distrubution
+    return taxonomy_distrubution
 
-    def getFilteredTaxonomyData(args, filteredList = '("")'):
-        """Get the filtered virus taxonomy data where group isn't in filteredList
+def getFilteredTaxonomyData(args, filteredList = '("")'):
+    """Get the filtered virus taxonomy data where group isn't in filteredList
 
     Parameters
     ----------
@@ -70,36 +70,36 @@ def getTaxonomyDistribution():
     dict
         a dictionary with the filtered viral data formatted as needed to work with datatables
     """
-        orderby = "`sequence_id`"
-        if args["order[0][column]"] is '1':
-            orderby = "`domain`"
-            elif args["order[0][column]"] is '2':
-                orderby = "`group`"
-                df = get_db_data(
-                    'select `sequence_id`, `domain`, `group` from gene_taxonomy where `group` not in {} AND (`sequence_id` LIKE "%{}%" OR `domain` LIKE "%{}%" OR `group` LIKE "%{}%") order by {} {} limit {} offset {}'.format(filteredList, args["search[value]"], args["search[value]"], args["search[value]"], orderby, args["order[0][dir]"], args["length"], args["start"]))
-                total_size = get_db_data(
-                    'select COUNT(`sequence_id`) as count from gene_taxonomy')
-                filtered_size = get_db_data(
-                    'select COUNT(`sequence_id`) as count from gene_taxonomy where `group` not in {} AND (`sequence_id` LIKE "%{}%" OR `domain` LIKE "%{}%" OR `group` LIKE "%{}%")'.format(filteredList, args["search[value]"], args["search[value]"], args["search[value]"]))
-                print(filtered_size['count'][0], file=sys.stderr)
-                print(total_size['count'][0], file=sys.stderr)
-                tax_data = []
-                for row in df.itertuples():
-                    tax_key = getattr(row, 'sequence_id')
-                    tax_domain = format_string(getattr(row, 'domain'))
-                    tax_group = format_string(getattr(row, 'group'))
-                    tax_data.append( [tax_key, tax_domain, tax_group] )
-                    data = {
-                        "draw": args["draw"],
-                        "recordsTotal": int(total_size['count'][0]),
-                        "recordsFiltered": int(filtered_size['count'][0]),
-                        "data": tax_data
-                    }
-                    return data
+    orderby = "`sequence_id`"
+    if args["order[0][column]"] is '1':
+        orderby = "`domain`"
+    elif args["order[0][column]"] is '2':
+        orderby = "`group`"
+    df = get_db_data(
+        'select `sequence_id`, `domain`, `group` from gene_taxonomy where `group` not in {} AND (`sequence_id` LIKE "%{}%" OR `domain` LIKE "%{}%" OR `group` LIKE "%{}%") order by {} {} limit {} offset {}'.format(filteredList, args["search[value]"], args["search[value]"], args["search[value]"], orderby, args["order[0][dir]"], args["length"], args["start"]))
+    total_size = get_db_data(
+        'select COUNT(`sequence_id`) as count from gene_taxonomy')
+    filtered_size = get_db_data(
+        'select COUNT(`sequence_id`) as count from gene_taxonomy where `group` not in {} AND (`sequence_id` LIKE "%{}%" OR `domain` LIKE "%{}%" OR `group` LIKE "%{}%")'.format(filteredList, args["search[value]"], args["search[value]"], args["search[value]"]))
+    print(filtered_size['count'][0], file=sys.stderr)
+    print(total_size['count'][0], file=sys.stderr)
+    tax_data = []
+    for row in df.itertuples():
+        tax_key = getattr(row, 'sequence_id')
+        tax_domain = format_string(getattr(row, 'domain'))
+        tax_group = format_string(getattr(row, 'group'))
+        tax_data.append( [tax_key, tax_domain, tax_group] )
+        data = {
+            "draw": args["draw"],
+            "recordsTotal": int(total_size['count'][0]),
+            "recordsFiltered": int(filtered_size['count'][0]),
+            "data": tax_data
+        }
+    return data
 
 
-                def format_taxonomy(virus_taxonomy_distribution):
-                    """Return the formatted values to be sent to charting library in json format.
+def format_taxonomy(virus_taxonomy_distribution):
+    """Return the formatted values to be sent to charting library in json format.
 
     Parameters
     ----------
@@ -111,16 +111,16 @@ def getTaxonomyDistribution():
     list, list 
         labels and values formatted in two different lists
     """
-                    labels = []
-                    values = []
-                    for key in virus_taxonomy_distribution:
-                        labels.append(key)
-                        values.append(virus_taxonomy_distribution[key])
+    labels = []
+    values = []
+    for key in virus_taxonomy_distribution:
+        labels.append(key)
+        values.append(virus_taxonomy_distribution[key])
 
-                        return labels, values
+    return labels, values
 
-                    def format_string(group):
-                        """Return the string formated as described: capitalize first letter of label unless it's a DNA or RNA label
+def format_string(group):
+    """Return the string formated as described: capitalize first letter of label unless it's a DNA or RNA label
 
     Parameters
     ----------
@@ -132,11 +132,11 @@ def getTaxonomyDistribution():
     string 
         group in the proper formatting
     """
-                        new_group = group[0].upper() + group[1:]
-                        if "DsDNA" in new_group or "DsRNA" in new_group or "SsDNA" in new_group or "SsRNA" in new_group:
-                            new_group = group
-                            return new_group
+    new_group = group[0].upper() + group[1:]
+    if "DsDNA" in new_group or "DsRNA" in new_group or "SsDNA" in new_group or "SsRNA" in new_group:
+        new_group = group
+    return new_group
 
 
-                        if __name__ == '__main__':
-                            print(getTaxonomyDistribution())
+if __name__ == '__main__':
+    print(getTaxonomyDistribution())
