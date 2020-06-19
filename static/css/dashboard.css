@@ -1,31 +1,31 @@
 .dashboard {
-  text-align: center;
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
+    text-align: center;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .dashcontainer {
-  padding: 1%;
-  display: inline-table;
+    padding: 1%;
+    display: inline-table;
 }
 
 .dashblock {
-  background: #E5E9F2;
-  padding: 30px;
-  width: 200px;
-  height: 90px;
+    background: #E5E9F2;
+    padding: 30px;
+    width: 200px;
+    height: 90px;
 }
 
 .dashblock a {
-  color: #47525E;
-  text-align: center;
-  display: block;
-  text-decoration: none;
+    color: #47525E;
+    text-align: center;
+    display: block;
+    text-decoration: none;
 }
 
 @media all and (min-width: 1060px) {
-/* CSS rules here for screens above 750px */
+    /* CSS rules here for screens above 750px */
     .dashboard {
         width: 800px
     }

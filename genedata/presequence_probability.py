@@ -1,13 +1,48 @@
+"""
+Presequence Probability Controller
+
+Functions that fetch and manipulate data necessary for the Presequence Probability page go here.
+
+The following functions are available:
+    * get_csv_data - function required to fetch data from csv file
+    * get_mapping - return dictionary or labels and values
+    * format_values - filter based on min and max P-values
+"""
+
 import pandas as pd
 from collections import OrderedDict
 
 
 def get_csv_data(filename):
+    """Retrieve data from CSV file
+
+    Parameters
+    ----------
+    filename : string
+        file name of the CSV file to read
+
+    Returns
+    -------
+    DataFrame
+        DF of rows that represent data read from file
+    """
     df = pd.read_csv(filename)
     return df
 
 
 def get_mapping(filename):
+    """Map data in CSV file so probability maps to num of presequences that have that probability (EX: 0.75 -> 10 indicates 10 presequences have probability of 0.75)
+
+    Parameters
+    ----------
+    filename : string
+        file name of the CSV file to read
+
+    Returns
+    -------
+    OrderedDict
+        Dict that represent the resulting mapping
+    """
     df = get_csv_data(filename)
     mapping = df.groupby(['probability_of_presequence']).size().to_dict()
     del mapping[0]
@@ -16,6 +51,22 @@ def get_mapping(filename):
 
 
 def format_values(mapping, pvalueMin, pvalueMax):
+    """Filter mapping based on min and max P-values
+
+    Parameters
+    ----------
+    mapping : OrderedDict
+        ordered dictionary of probabilities and their size
+    pvalueMin : float
+        min P-value to include
+    pvalueMax : float
+        max P-value to include
+
+    Returns
+    -------
+    list, list
+        labels and values for the probabilities after being filtered
+    """
     probability_labels = []
     probability_values = []
     for key, value in mapping.items():
@@ -24,11 +75,3 @@ def format_values(mapping, pvalueMin, pvalueMax):
             probability_values.append(value)
 
     return probability_labels, probability_values
-
-
-def normalize(probability_values):
-    targetvalues = []
-    for value in probability_values:
-        temp = (1 - 0.9) * value + (0.9 * 1000)
-        targetvalues.append(temp)
-    return targetvalues

@@ -13,8 +13,77 @@ Focuses on:
 
 Goal of the project is to provide interactive application for user to access data analysis of entire Viral Proteome based on orthologs to Human Proteins, Localization, ISG and various filters probability of being mitochondrial protein, number of cleavage sites, probability of being Trans-membrane protein to obtain complete list of viral protein information (including Accession ID, Protein Name, Probability of Mitochondrial signal, Virus Type). This would help researchers acquire viral proteins that mimic the host (human) mitochondrial localized proteins.
 
-## Code
-Most of the python code is in the genedata module. Try to organize the new code accordingly. 
+## Code Structure
+<pre>
+<strong>Virolog_WebDev</strong>  
+|-- <strong>documentation</strong>  
+    +-- ViralAnalysisWebAppArchitecture.jpg  
+|-- <strong>filters</strong>  
+    |-- <strong>isg</strong>  
+        +-- files pertaining to isg filter  
+    |-- <strong>mitofates</strong>  
+        +-- files pertaining to mitofates filter  
+    |-- <strong>tmhmm</strong>  
+        +-- files pertaining to tmhmm filter  
+    |-- <strong>word++</strong>  
+        +-- files pertaining to word++ filter  
+    |-- cleanCsvResults.py  
+    |-- tmhmm_mitofates_viralResults.csv  
+    |-- tmhmm_mitofates_viralShortResults.csv  
+    +-- tmhmmMitofatesComparison.py  
+|-- <strong>genedata</strong>  
+    |-- <strong>csvdata</strong>  
+        |-- gene_taxonomy.csv  
+        |-- mitofates_viral1.csv  
+        |-- mitofatesResults_Human.MitoCarta2.0.csv  
+        +-- mitofatesResults_Mouse.MitoCarta2.0.csv  
+    |-- <strong>data</strong>  
+        |-- gene_identifiers.txt  
+        |-- mitofatesResults_Human.MitoCarta2.0.xlsx  
+        |-- mitofatesResults_Mouse.MitoCarta2.0.xlsx  
+        |-- mitofatesResults_viral1.xlsx  
+        +-- mitofatesResults_viral2.xlsx  
+    |-- <strong>databasedumps</strong>  
+        +-- viralanalysisdb2018.sql  
+    |-- <strong>outputdata</strong>  
+        |-- gene_taxonomy.csv  
+        |-- mitofates_viral_cleaned.csv  
+        |-- mitofates_viral1-cleaned2.csv  
+        |-- mitofatesResults_Human.MitoCarta2.0-cleaned.csv  
+        +-- mitofatesResults_Mouse.MitoCarta2.0-cleaned.csv  
+    |-- cleavage_sites.py  
+    |-- datacleaner.py  
+    |-- presequence_probability.py  
+    |-- protein_info.py  
+    +-- virus_taxonomy.py  
+|-- <strong>HeatMapGeneration</strong>  
+    |-- example_heat_map.html  
+    |-- geneExpressionData_test.csv  
+    |-- geneExpressionData.csv  
+    |-- heat_map.py  
+    |-- README.md  
+    +-- requirements.txt  
+|-- <strong>static</strong>  
+    |-- <strong>css</strong>  
+        |-- dashboard.css  
+	|-- index.css  
+	+-- layout.css  
+    |-- <strong>js</strong>  
+        |-- datatables.min.js  
+	+-- index.js  
+|-- <strong>templates</strong>  
+    |-- <strong>partials</strong>  
+        |-- cleavagesites.html  
+        |-- presequenceprobability.html  
+        +-- viraltaxonomy.html  
+    |-- dashboard.html  
+    +-- layout.html  
+|-- create-tables.sql  
+|-- Human_Genome.sql  
+|-- main.py  
+|-- README.md  
++-- requirements.txt  
+</pre>
 
 ## Deployment
 

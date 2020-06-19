@@ -4,80 +4,80 @@ html, body {
 }
 
 .sidebar {
-  width: 250px;
-  height: 100%;
-  border-right: solid;
-  border-width: 1px;
-  border-color: #D3DCE6;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
+    width: 250px;
+    height: 100%;
+    border-right: solid;
+    border-width: 1px;
+    border-color: #D3DCE6;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
 }
 
 .logo {
-  padding: 41px;
+    padding: 41px;
 }
 
 .logo a {
-  background: #8190A5;
-  margin: 25px;
-  padding: 10px;
-  color: white;
+    background: #8190A5;
+    margin: 25px;
+    padding: 10px;
+    color: white;
 }
 
 .mainmenu, .submenu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .mainmenu a {
-  display: block;
-  background-color: white;
-  text-decoration: none;
-  padding: 15px;
-  color: #000;
-  border-top: solid;
-  border-width: 1px;
-  border-color: #D3DCE6;
+    display: block;
+    background-color: white;
+    text-decoration: none;
+    padding: 15px;
+    color: #000;
+    border-top: solid;
+    border-width: 1px;
+    border-color: #D3DCE6;
 }
 
 .mainmenu:last-child {
-  border-bottom: solid;
-  border-width: 1px;
-  border-color: #D3DCE6;
+    border-bottom: solid;
+    border-width: 1px;
+    border-color: #D3DCE6;
 }
 
 .mainmenu a:hover {
-  background-color: #C5C5C5;
+    background-color: #C5C5C5;
 }
 
 .mainmenu li:hover .submenu {
-  display: block;
-  max-height: 200px;
+    display: block;
+    max-height: 200px;
 }
 
 .submenu a {
-  background-color: #F9FAFC;
-  padding-left: 30px;
+    background-color: #F9FAFC;
+    padding-left: 30px;
 }
 
 .submenu a:hover {
-  background-color: #666;
+    background-color: #666;
 }
 
 .submenu {
-  overflow: hidden;
-  max-height: 0;
-  -webkit-transition: all 0.5s ease-out;
+    overflow: hidden;
+    max-height: 0;
+    -webkit-transition: all 0.5s ease-out;
 }
 
 .maincontent {
-  margin-left: 260px;
+    margin-left: 260px;
 }
 
 .maincontent input {
-  margin: 10px;
-  margin-left: 0px;
+    margin: 10px;
+    margin-left: 0px;
 }

@@ -2,32 +2,32 @@
 {% block title %}Visualization of Viral Proteome - Presequence Probability{% endblock %}
 {% block header %}Presequence Probability{% endblock %}
 {% block content %}
-          <div class="chartWrapper" id="cleavagechart">
-            <div class="chartAreaWrapper">
-              <div class="chartAreaWrapper2">
-                <canvas id="myChart"></canvas>
-              </div>
-            </div>
-            <canvas id="myChartAxis" height="300" width="0"></canvas>
-            <div>
-              <form id="pvalue-restrictor">
-                  <input type="number" step="any" value="0.5" name="pvalueMin" placeholder="Min" min="0.00" max="1.00">
-                  <input type="number" step="any" value="1" name="pvalueMax" placeholder="Max" min="0.00" max="1.00">
-                  <button type="submit" class="btn btn-success">
-                    <i class="fas fa-play"></i> Draw
-                </button>
-              </form>
-            </div>
-            <div><p>Click on legend colors to toggle a particular graph on/off.</p></div>
-          </div>
+<div class="chartWrapper" id="cleavagechart">
+    <div class="chartAreaWrapper">
+        <div class="chartAreaWrapper2">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+    <canvas id="myChartAxis" height="300" width="0"></canvas>
+    <div>
+        <form id="pvalue-restrictor">
+            <input type="number" step="any" value="0.5" name="pvalueMin" placeholder="Min" min="0.00" max="1.00">
+            <input type="number" step="any" value="1" name="pvalueMax" placeholder="Max" min="0.00" max="1.00">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-play"></i> Draw
+            </button>
+        </form>
+    </div>
+    <div><p>Click on legend colors to toggle a particular graph on/off.</p></div>
+</div>
 {% endblock %}
 
 {% block script %}
 $('#pvalue-restrictor').submit(function(e){
-  e.preventDefault();
-  var pvalueMin = Number($("input[name='pvalueMin']",this).val());
-  var pvalueMax = Number($("input[name='pvalueMax']",this).val());
-  drawChartProbability(pvalueMin, pvalueMax);
+e.preventDefault();
+var pvalueMin = Number($("input[name='pvalueMin']",this).val());
+var pvalueMax = Number($("input[name='pvalueMax']",this).val());
+drawChartProbability(pvalueMin, pvalueMax);
 });
 
 {% endblock %}

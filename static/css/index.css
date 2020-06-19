@@ -3,9 +3,15 @@
     overflow-y: scroll;
 }
 
-#viral-taxonomy-play{
-    
+#viral-list {
+    margin-left: 15px;
 }
+
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
 .chartWrapper > canvas {
     position: absolute;
     left: 0;
@@ -36,6 +42,11 @@ table.dataTable thead .sorting_desc:after,
 table.dataTable thead .sorting_desc:before,
 table.dataTable thead .sorting_desc_disabled:after,
 table.dataTable thead .sorting_desc_disabled:before {
-bottom: .5em;
+    bottom: .5em;
 }
 
+.hidden{ display: none; }
+
+#taxTable_info {
+    padding-top: 60px;
+}
