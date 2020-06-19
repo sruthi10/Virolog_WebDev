@@ -87,7 +87,7 @@ Goal of the project is to provide interactive application for user to access dat
 
 ## Deployment
 
-Follow the steps at the following url : https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-16-04
+It is assumed that this repo has been cloned locally and you are in the base directory for the cloned repo. Follow the steps at the following url : https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-16-04
 
 1. Create a python virtual environment and activate it ([how?](http://www.pythonforbeginners.com/basics/how-to-use-python-virtualenv 'Detailed info how to create a virtualenv')).
 2. Run the following the command after activating the virtualenv:
