@@ -32,7 +32,7 @@ def get_db_data(query):
     """
     connection = pymysql.connect(host='127.0.0.1',
                                  user='root',
-                                 password='root',
+                                 password='password', # on cloud server: pw = root
                                  db='viralanalysisdb',
                                  cursorclass=pymysql.cursors.DictCursor)
     df = pd.read_sql(query, connection)
@@ -40,7 +40,7 @@ def get_db_data(query):
 
 
 def getTaxonomyDistribution():
-    """Get the virus taxonomy distribution - the count for each group in the taxonomy data.
+    """Get the virus taxonomy distribution - the count for each Realm in the taxonomy data.
 
     Returns
     -------
@@ -48,7 +48,7 @@ def getTaxonomyDistribution():
         a dictionary with label = group, data = count(group)
     """
     df = get_db_data(
-        'select `group`, COUNT(`group`) as taxocount from gene_taxonomy group by `group`')
+        'select `realm`, COUNT(`realm`) as taxocount from taxonomy group by `realm`')
     taxonomy_distrubution = {}
     for row in df.itertuples():
         taxonomy_key = format_string(row[1].strip())
@@ -56,7 +56,7 @@ def getTaxonomyDistribution():
     return taxonomy_distrubution
 
 def getFilteredTaxonomyData(args, filteredList = '("")'):
-    """Get the filtered virus taxonomy data where group isn't in filteredList
+    """Get the filtered virus metadata and taxonomy data where Realm isn't in filteredList
 
     Parameters
     ----------
@@ -70,31 +70,44 @@ def getFilteredTaxonomyData(args, filteredList = '("")'):
     dict
         a dictionary with the filtered viral data formatted as needed to work with datatables
     """
-    orderby = "`sequence_id`"
+    orderby = "`Accession`"
     if args["order[0][column]"] is '1':
-        orderby = "`domain`"
+        orderby = "`Description`"
     elif args["order[0][column]"] is '2':
-        orderby = "`group`"
+        orderby = "`Length`"
+    elif args["order[0][column]"] is '3':
+        orderby = "`Organism`"
+    elif args["order[0][column]"] is '4':
+        orderby = "`Realm`"
+    elif args["order[0][column]"] is '5':
+        orderby = "`Family`"
     df = get_db_data(
-        'select `sequence_id`, `domain`, `group` from gene_taxonomy where `group` not in {} AND (`sequence_id` LIKE "%{}%" OR `domain` LIKE "%{}%" OR `group` LIKE "%{}%") order by {} {} limit {} offset {}'.format(filteredList, args["search[value]"], args["search[value]"], args["search[value]"], orderby, args["order[0][dir]"], args["length"], args["start"]))
+        'select m.`Accession`, m.`Description`, m.`Length`, m.`Organism`, t.`Realm`, t.`Family` from protein_metadata_small m, taxonomy t where m.`Taxonomy_ID` = t.`Taxonomy_ID` AND `Realm` not in {} AND (`Accession` LIKE "%{}%" OR `Description` LIKE "%{}%" OR `Organism` LIKE "%{}%") order by {} {} limit {} offset {}'.format(filteredList, args["search[value]"], args["search[value]"], args["search[value]"], orderby, args["order[0][dir]"], args["length"], args["start"]))
     total_size = get_db_data(
-        'select COUNT(`sequence_id`) as count from gene_taxonomy')
+        'select COUNT(`Accession`) as count from protein_metadata_small')
     filtered_size = get_db_data(
-        'select COUNT(`sequence_id`) as count from gene_taxonomy where `group` not in {} AND (`sequence_id` LIKE "%{}%" OR `domain` LIKE "%{}%" OR `group` LIKE "%{}%")'.format(filteredList, args["search[value]"], args["search[value]"], args["search[value]"]))
+        'select COUNT(`Accession`) as count from protein_metadata_small m, taxonomy t where m.`Taxonomy_ID` = t.`Taxonomy_ID` AND `Realm` not in {} AND (`Accession` LIKE "%{}%" OR `Description` LIKE "%{}%" OR `Organism` LIKE "%{}%")'.format(filteredList, args["search[value]"], args["search[value]"], args["search[value]"]))
+    
+    #all_recs = get_db_data('select m.* from protein_metadata_small m LEFT JOIN taxonomy t ON m.`Taxonomy_ID` = t.`Taxonomy_ID` WHERE t.`Taxonomy_ID` IS NULL')
+    #print(all_recs['Accession']) # tax id 548914
+    
     print(filtered_size['count'][0], file=sys.stderr)
     print(total_size['count'][0], file=sys.stderr)
     tax_data = []
     for row in df.itertuples():
-        tax_key = getattr(row, 'sequence_id')
-        tax_domain = format_string(getattr(row, 'domain'))
-        tax_group = format_string(getattr(row, 'group'))
-        tax_data.append( [tax_key, tax_domain, tax_group] )
-        data = {
-            "draw": args["draw"],
-            "recordsTotal": int(total_size['count'][0]),
-            "recordsFiltered": int(filtered_size['count'][0]),
-            "data": tax_data
-        }
+        tax_key = getattr(row, 'Accession')
+        tax_name = format_string(getattr(row, 'Description'))
+        tax_len = getattr(row, 'Length')
+        tax_org = format_string(getattr(row, 'Organism'))
+        tax_realm = format_string(getattr(row, 'Realm'))
+        tax_fam = format_string(getattr(row, 'Family'))
+        tax_data.append( [tax_key, tax_name, tax_len, tax_org, tax_realm, tax_fam] )
+    data = {
+        "draw": args["draw"],
+        "recordsTotal": int(total_size['count'][0]),
+        "recordsFiltered": int(filtered_size['count'][0]),
+        "data": tax_data
+    }
     return data
 
 

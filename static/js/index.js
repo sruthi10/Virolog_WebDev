@@ -197,9 +197,9 @@ function drawPieTaxonomy(){
                         var index = legendItem.index;
                         var ci = this.chart;
                         var meta = ci.getDatasetMeta(0);
-                        var CurrentalreadyHidden = (meta.data[index].hidden==null) ? false : (meta.data[index].hidden);
+                        var currentAlreadyHidden = (meta.data[index].hidden==null) ? false : (meta.data[index].hidden);
 
-                        if(CurrentalreadyHidden){
+                        if(currentAlreadyHidden){
                             // add tag back to graph and table
                             meta.data[index].hidden=false;
                             var label = meta.data[index]._model.label;
@@ -224,8 +224,8 @@ function drawPieTaxonomy(){
         });        
     });
     $("#viral-taxonomy-play").hide();
-    $("div").removeClass('hidden');;
-    $("#viral-list").removeClass('hidden');;
+    $("div").removeClass('hidden');
+    $("#viral-list").removeClass('hidden');
 }
 
 function viralTaxSelectAll() {
@@ -255,9 +255,12 @@ function buildHtmlTable(selector) {
         ajax: "/filteredTaxonomyData/(" + filteredViralTax.join(",") + ")",
         destroy: true,
         columns: [
-            { title: "Sequence ID"},
-            { title: "Domain"},
-            { title: "Group" }
+            { title: "Accession ID"},
+            { title: "Scientific Name"},
+            { title: "Length" },
+            { title: "Organism" },
+            { title: "Realm" },
+            { title: "Family" }
         ]
     });
 }
