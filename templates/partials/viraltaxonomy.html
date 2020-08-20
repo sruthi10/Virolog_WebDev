@@ -3,12 +3,15 @@
 {% block header %}Viral Taxonomy Distribution{% endblock %}
 {% block content %}
 <div class="chartWrapper-viral-taxonomy" id="taxonomy-distribution">
-    <button id="viral-taxonomy-play" class="btn btn-success"><i class="fas fa-play"></i> Draw</button>
-    <div class="hidden" style="text-align: center">
-        <div style="display:inline-block">
-            <button id="select-all" type="button">Select All</button>
-            <button id="deselect-all" type="button">Deselect All</button>
+    <div style="text-align: center">
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div style="margin: auto">
+                <button id="select-all" class="btn btn-sm btn-outline-secondary">Select All</button>
+                <button id="deselect-all" class="btn btn-sm btn-outline-secondary">Deselect All</button>
+                <button id="reset" class="btn btn-sm btn-outline-secondary">Reset</button>
+            </div>
         </div>
+        <h3 id="family-chart-header"></h3>
     </div>
     <div class="chartAreaWrapper-viral-taxonomy">
         <div class="chartAreaWrapper2-viral-taxonomy">
@@ -18,20 +21,24 @@
     <canvas id="myChartAxis-viral-taxonomy" height="10" width="0"></canvas>
 </div>
 
-<h2 id="viral-list" class="hidden">Virolog List</h2>
-<table id="taxTable" class="display" style="width:100%">
-</table>
+<div id="table-section" class="hidden">
+    <h2 id="viral-list">Virolog List</h2>
+    <table id="taxTable" class="display" style="width:100%"></table>
+</div>
 {% endblock %}
 
 {% block script %}
-$('#viral-taxonomy-play').on('click', function(){
-drawPieTaxonomy(); 
-buildHtmlTable('#taxTable');
+$('document').ready(function(){
+    drawPieTaxonomy(); 
+    buildHtmlTable('#taxTable');
 });
 $('#select-all').on('click', function(){
-viralTaxSelectAll(); 
+    viralTaxSelectAll(); 
 });
 $('#deselect-all').on('click', function(){
-viralTaxDeselectAll(); 
+    viralTaxDeselectAll(); 
+});
+$('#reset').on('click', function(){
+    viralTaxReset(); 
 });
 {% endblock %}

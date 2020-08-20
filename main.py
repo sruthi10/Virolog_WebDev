@@ -176,6 +176,19 @@ def getVirusTaxonomyData():
     label, values = virus_taxonomy.format_taxonomy(virus_taxonomy_distribution)
     return jsonify({"labels": label, "data": values})
 
+@app.route('/getFamilyTaxonomyDistribution/<realm>')
+def getFamilyVirusTaxonomyData(realm):
+    """Fetches the initial viral tax distribution to be displayed in the pie chart
+
+    Returns
+    -------
+    flask.Response()
+        an object with content-type header 'application/json' that contains viral tax labels and counts
+    """
+    virus_taxonomy_distribution = virus_taxonomy.getFamilyTaxonomyDistribution(realm)
+    label, values = virus_taxonomy.format_taxonomy(virus_taxonomy_distribution)
+    return jsonify({"labels": label, "data": values})
+
 @app.route('/filteredTaxonomyData/<filteredList>')
 def getFilteredTaxonomyData(filteredList):
     """Fetches all the viral tax data to be displayed

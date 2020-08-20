@@ -55,6 +55,25 @@ def getTaxonomyDistribution():
         taxonomy_distrubution[taxonomy_key] = int(row[2])
     return taxonomy_distrubution
 
+def getFamilyTaxonomyDistribution(realm):
+    """Get the family virus taxonomy distribution - the count for each Family in the taxonomy data.
+
+    Returns
+    -------
+    dict
+        a dictionary with label = group, data = count(group)
+    """
+    print(realm)
+    df = get_db_data(
+        'select `realm`, `family`, COUNT(`family`) as taxocount from taxonomy where `realm` = "{}" group by `family` order by taxocount desc limit 5'.format(realm))
+    taxonomy_distrubution = {}
+    for row in df.itertuples():
+        taxonomy_key = format_string(row[2].strip())
+        taxonomy_distrubution[taxonomy_key] = int(row[3])
+    print("FAMILY TAX: ")
+    print(taxonomy_distrubution)
+    return taxonomy_distrubution
+
 def getFilteredTaxonomyData(args, filteredList = '("")'):
     """Get the filtered virus metadata and taxonomy data where Realm isn't in filteredList
 
@@ -82,14 +101,11 @@ def getFilteredTaxonomyData(args, filteredList = '("")'):
     elif args["order[0][column]"] is '5':
         orderby = "`Family`"
     df = get_db_data(
-        'select m.`Accession`, m.`Description`, m.`Length`, m.`Organism`, t.`Realm`, t.`Family` from protein_metadata_small m, taxonomy t where m.`Taxonomy_ID` = t.`Taxonomy_ID` AND `Realm` not in {} AND (`Accession` LIKE "%{}%" OR `Description` LIKE "%{}%" OR `Organism` LIKE "%{}%") order by {} {} limit {} offset {}'.format(filteredList, args["search[value]"], args["search[value]"], args["search[value]"], orderby, args["order[0][dir]"], args["length"], args["start"]))
+        'select m.`Accession`, m.`Description`, m.`Length`, m.`Organism`, t.`Realm`, t.`Family` from protein_metadata_small m, taxonomy t where m.`Taxonomy_ID` = t.`Taxonomy_ID` AND `Realm` not in {} AND `Family` not in {} AND (`Accession` LIKE "%{}%" OR `Description` LIKE "%{}%" OR `Organism` LIKE "%{}%") order by {} {} limit {} offset {}'.format(filteredList, filteredList, args["search[value]"], args["search[value]"], args["search[value]"], orderby, args["order[0][dir]"], args["length"], args["start"]))
     total_size = get_db_data(
         'select COUNT(`Accession`) as count from protein_metadata_small')
     filtered_size = get_db_data(
-        'select COUNT(`Accession`) as count from protein_metadata_small m, taxonomy t where m.`Taxonomy_ID` = t.`Taxonomy_ID` AND `Realm` not in {} AND (`Accession` LIKE "%{}%" OR `Description` LIKE "%{}%" OR `Organism` LIKE "%{}%")'.format(filteredList, args["search[value]"], args["search[value]"], args["search[value]"]))
-    
-    #all_recs = get_db_data('select m.* from protein_metadata_small m LEFT JOIN taxonomy t ON m.`Taxonomy_ID` = t.`Taxonomy_ID` WHERE t.`Taxonomy_ID` IS NULL')
-    #print(all_recs['Accession']) # tax id 548914
+        'select COUNT(`Accession`) as count from protein_metadata_small m, taxonomy t where m.`Taxonomy_ID` = t.`Taxonomy_ID` AND `Realm` not in {} AND `Family` not in {} AND (`Accession` LIKE "%{}%" OR `Description` LIKE "%{}%" OR `Organism` LIKE "%{}%")'.format(filteredList, filteredList, args["search[value]"], args["search[value]"], args["search[value]"]))
     
     print(filtered_size['count'][0], file=sys.stderr)
     print(total_size['count'][0], file=sys.stderr)

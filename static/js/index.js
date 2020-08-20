@@ -172,6 +172,9 @@ function hexToRgb(hex) {
 function drawPieTaxonomy(){
     var ctx = document.getElementById("myChart-viral-taxonomy").getContext('2d');
     $.getJSON( "/getTaxonomyDistribution", function(jsondata){
+        if (typeof currentChart !== 'undefined') {
+            currentChart.destroy();
+        }
         currentChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
@@ -199,7 +202,69 @@ function drawPieTaxonomy(){
                         var meta = ci.getDatasetMeta(0);
                         var currentAlreadyHidden = (meta.data[index].hidden==null) ? false : (meta.data[index].hidden);
 
-                        if(currentAlreadyHidden){
+                        var label = meta.data[index]._model.label;
+                        if (currentAlreadyHidden) {
+                            // add tag back to graph and table
+                            meta.data[index].hidden=false;
+                            filteredViralTax = filteredViralTax.filter(x => !x.includes(label))
+                            console.log(filteredViralTax)
+
+                        } else {
+                            meta.data[index].hidden=true;
+                            filteredViralTax.push(`'`+label+`'`);
+                            console.log(filteredViralTax)
+
+                        }
+                        ci.update();
+                        if (filteredViralTax.length == 7) {
+                            document.getElementById("family-chart-header").innerHTML = "Showing Top 5 Families for Realm " + label;
+                            drawFamilyPieTaxonomy(label);
+                        } else {
+                            if (filteredViralTax.length == 0) {
+                                filteredViralTax = ["''"]
+                            }
+                            buildHtmlTable('#taxTable');
+                        }
+                    }
+                }
+            }
+        });
+        $("#table-section").removeClass('hidden');
+    });
+}
+
+function drawFamilyPieTaxonomy(realm) {
+    var ctx = document.getElementById("myChart-viral-taxonomy").getContext('2d');
+    $.getJSON( "/getFamilyTaxonomyDistribution/" + realm, function(jsondata){
+            currentChart.destroy();
+            currentChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: jsondata["data"],
+                    backgroundColor: getColors(jsondata["data"].length),
+                }],
+                labels: jsondata["labels"],
+            },
+            options: {
+                pieceLabel: {
+                    render: 'percentage',
+                    fontColor: function (data) {
+                        var rgb = hexToRgb(data.dataset.backgroundColor[data.index]);
+                        var threshold = 140;
+                        var luminance = 0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b;
+                        return luminance > threshold ? 'black' : 'white';
+                    },
+                    precision: 2
+                }, legend: {
+                    onClick:
+                    function(e, legendItem) {
+                        var index = legendItem.index;
+                        var ci = this.chart;
+                        var meta = ci.getDatasetMeta(0);
+                        var currentAlreadyHidden = (meta.data[index].hidden==null) ? false : (meta.data[index].hidden);
+
+                        if (currentAlreadyHidden) {
                             // add tag back to graph and table
                             meta.data[index].hidden=false;
                             var label = meta.data[index]._model.label;
@@ -223,9 +288,7 @@ function drawPieTaxonomy(){
             }
         });        
     });
-    $("#viral-taxonomy-play").hide();
-    $("div").removeClass('hidden');
-    $("#viral-list").removeClass('hidden');
+    buildHtmlTable('#taxTable');
 }
 
 function viralTaxSelectAll() {
@@ -244,6 +307,13 @@ function viralTaxDeselectAll() {
         filteredViralTax.push(`'`+ds._model.label+`'`)
     });
     currentChart.update();
+    buildHtmlTable('#taxTable');
+}
+
+function viralTaxReset() {
+    filteredViralTax = ["''"]
+    document.getElementById("family-chart-header").innerHTML = "";
+    drawPieTaxonomy();
     buildHtmlTable('#taxTable');
 }
 
