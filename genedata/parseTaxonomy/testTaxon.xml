@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<!DOCTYPE TaxaSet PUBLIC "-//NLM//DTD Taxon, 14th January 2002//EN" "https://www.ncbi.nlm.nih.gov/entrez/query/DTD/taxon.dtd">
+<TaxaSet>
+<Taxon>
+    <TaxId>2756218</TaxId>
+    <ScientificName>unclassified Melnykvirinae</ScientificName>
+    <ParentTaxId>2731649</ParentTaxId>
+    <Rank>no rank</Rank>
+    <Division>Phages</Division>
+    <GeneticCode>
+        <GCId>11</GCId>
+        <GCName>Bacterial, Archaeal and Plant Plastid</GCName>
+    </GeneticCode>
+    <MitoGeneticCode>
+        <MGCId>0</MGCId>
+        <MGCName>Unspecified</MGCName>
+    </MitoGeneticCode>
+    <Lineage>Viruses; Duplodnaviria; Heunggongvirae; Uroviricota; Caudoviricetes; Caudovirales; Autographiviridae; Melnykvirinae</Lineage>
+    <LineageEx>
+        <Taxon>
+            <TaxId>10239</TaxId>
+            <ScientificName>Viruses</ScientificName>
+            <Rank>superkingdom</Rank>
+        </Taxon>
+        <Taxon>
+            <TaxId>2731341</TaxId>
+            <ScientificName>Duplodnaviria</ScientificName>
+            <Rank>no rank</Rank>
+        </Taxon>
+        <Taxon>
+            <TaxId>2731360</TaxId>
+            <ScientificName>Heunggongvirae</ScientificName>
+            <Rank>no rank</Rank>
+        </Taxon>
+        <Taxon>
+            <TaxId>2731618</TaxId>
+            <ScientificName>Uroviricota</ScientificName>
+            <Rank>phylum</Rank>
+        </Taxon>
+        <Taxon>
+            <TaxId>2731619</TaxId>
+            <ScientificName>Caudoviricetes</ScientificName>
+            <Rank>class</Rank>
+        </Taxon>
+        <Taxon>
+            <TaxId>28883</TaxId>
+            <ScientificName>Caudovirales</ScientificName>
+            <Rank>order</Rank>
+        </Taxon>
+        <Taxon>
+            <TaxId>2731643</TaxId>
+            <ScientificName>Autographiviridae</ScientificName>
+            <Rank>family</Rank>
+        </Taxon>
+        <Taxon>
+            <TaxId>2731649</TaxId>
+            <ScientificName>Melnykvirinae</ScientificName>
+            <Rank>genus</Rank>
+        </Taxon>
+    </LineageEx>
+    <CreateDate>2020/07/22 06:53:50</CreateDate>
+    <UpdateDate>2020/07/22 06:53:54</UpdateDate>
+    <PubDate>2020/07/22 07:10:22</PubDate>
+</Taxon>
+<Taxon>
+    <TaxId>2756217</TaxId>
+    <ScientificName>unclassified Studiervirinae</ScientificName>
+    <ParentTaxId>2731653</ParentTaxId>
+    <Rank>no rank</Rank>
+    <Division>Phages</Division>
+    <GeneticCode>
+        <GCId>11</GCId>
+        <GCName>Bacterial, Archaeal and Plant Plastid</GCName>
+    </GeneticCode>
+    <MitoGeneticCode>
+        <MGCId>0</MGCId>
+        <MGCName>Unspecified</MGCName>
+    </MitoGeneticCode>
+    <Lineage>Viruses; Duplodnaviria; Heunggongvirae; Uroviricota; Caudoviricetes; Caudovirales; Autographiviridae; Studiervirinae</Lineage>
+    <LineageEx>
+        <Taxon>
+            <TaxId>10239</TaxId>
+            <ScientificName>Viruses</ScientificName>
+            <Rank>superkingdom</Rank>
+        </Taxon>
+        <Taxon>
+            <TaxId>2731341</TaxId>
+            <ScientificName>Duplodnaviria</ScientificName>
+            <Rank>no rank</Rank>
+        </Taxon>
+        <Taxon>
+            <TaxId>2731360</TaxId>
+            <ScientificName>Heunggongvirae</ScientificName>
+            <Rank>no rank</Rank>
+        </Taxon>
+        <Taxon>
+            <TaxId>2731618</TaxId>
+            <ScientificName>Uroviricota</ScientificName>
+            <Rank>phylum</Rank>
+        </Taxon>
+        <Taxon>
+            <TaxId>2731619</TaxId>
+            <ScientificName>Caudoviricetes</ScientificName>
+            <Rank>class</Rank>
+        </Taxon>
+        <Taxon>
+            <TaxId>28883</TaxId>
+            <ScientificName>Caudovirales</ScientificName>
+            <Rank>order</Rank>
+        </Taxon>
+        <Taxon>
+            <TaxId>2731643</TaxId>
+            <ScientificName>Autographiviridae</ScientificName>
+            <Rank>family</Rank>
+        </Taxon>
+        <Taxon>
+            <TaxId>2731653</TaxId>
+            <ScientificName>Studiervirinae</ScientificName>
+            <Rank>subfamily</Rank>
+        </Taxon>
+    </LineageEx>
+    <CreateDate>2020/07/22 06:53:28</CreateDate>
+    <UpdateDate>2020/07/22 06:53:32</UpdateDate>
+    <PubDate>2020/07/22 07:10:23</PubDate>
+</Taxon>
+</TaxaSet>
