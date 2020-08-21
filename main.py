@@ -176,16 +176,16 @@ def getVirusTaxonomyData():
     label, values = virus_taxonomy.format_taxonomy(virus_taxonomy_distribution)
     return jsonify({"labels": label, "data": values})
 
-@app.route('/getFamilyTaxonomyDistribution/<realm>')
-def getFamilyVirusTaxonomyData(realm):
-    """Fetches the initial viral tax distribution to be displayed in the pie chart
+@app.route('/getFamilyTaxonomyDistribution/<realm>/<familyList>')
+def getFamilyVirusTaxonomyData(realm, familyList):
+    """Fetches the viral tax distribution to be displayed in the pie chart of families in a given realm
 
     Returns
     -------
     flask.Response()
         an object with content-type header 'application/json' that contains viral tax labels and counts
     """
-    virus_taxonomy_distribution = virus_taxonomy.getFamilyTaxonomyDistribution(realm)
+    virus_taxonomy_distribution = virus_taxonomy.getFamilyTaxonomyDistribution(realm, familyList)
     label, values = virus_taxonomy.format_taxonomy(virus_taxonomy_distribution)
     return jsonify({"labels": label, "data": values})
 
@@ -206,6 +206,23 @@ def getFilteredTaxonomyData(filteredList):
     print(request.args, file=sys.stderr)
     return jsonify(virus_taxonomy.getFilteredTaxonomyData(request.args, filteredList))
 
+@app.route('/getFamilies/<realm>')
+def getFamilies(realm):
+    families = virus_taxonomy.getFamilies(realm)
+    jsonData = {
+        'values': families
+    }
+    return jsonify(jsonData)
+
+@app.route('/getFamilyCount/<family>')
+def getFamilyCount(family):
+    count = virus_taxonomy.getFamilyCount(family)
+    print(count)
+    jsonData = {
+        'count': int(count)
+    }
+    print(jsonData)
+    return jsonify(jsonData)
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True) # For cloud deployment, add param host='0.0.0.0'

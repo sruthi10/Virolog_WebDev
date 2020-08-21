@@ -38,6 +38,31 @@ def get_db_data(query):
     df = pd.read_sql(query, connection)
     return df 
 
+def getFamilies(realm):
+    """Get the families within a given realm
+
+    Returns
+    -------
+    list
+        a list with families in realm
+    """
+    df = get_db_data(
+        'select distinct `family` from taxonomy where `realm` = "{}"'.format(realm))
+    print(df.values.tolist())
+    return df.values.tolist()
+
+def getFamilyCount(family):
+    """Get the number of occurrences of family in the db
+
+    Returns
+    -------
+    int
+        a count of proteins in the given family
+    """
+    df = get_db_data(
+        'select COUNT(`family`) as taxocount from taxonomy where `family` = "{}" group by `family`'.format(family))
+    print(df.values[0][0])
+    return df.values[0][0]
 
 def getTaxonomyDistribution():
     """Get the virus taxonomy distribution - the count for each Realm in the taxonomy data.
@@ -45,7 +70,7 @@ def getTaxonomyDistribution():
     Returns
     -------
     dict
-        a dictionary with label = group, data = count(group)
+        a dictionary with label = Realm, data = count(Realm)
     """
     df = get_db_data(
         'select `realm`, COUNT(`realm`) as taxocount from taxonomy group by `realm`')
@@ -55,23 +80,20 @@ def getTaxonomyDistribution():
         taxonomy_distrubution[taxonomy_key] = int(row[2])
     return taxonomy_distrubution
 
-def getFamilyTaxonomyDistribution(realm):
+def getFamilyTaxonomyDistribution(realm, familyList = '("")'):
     """Get the family virus taxonomy distribution - the count for each Family in the taxonomy data.
 
     Returns
     -------
     dict
-        a dictionary with label = group, data = count(group)
+        a dictionary with label = family, data = count(family)
     """
-    print(realm)
     df = get_db_data(
-        'select `realm`, `family`, COUNT(`family`) as taxocount from taxonomy where `realm` = "{}" group by `family` order by taxocount desc limit 5'.format(realm))
+        'select * from ((select `family`, COUNT(`family`) as taxocount from taxonomy where `realm` = "{}" group by `family` order by taxocount desc limit 5) UNION (SELECT `family`, COUNT(`family`) as taxocount FROM taxonomy where `family` in {} group by `family`)) as d where `family` is not null'.format(realm, familyList))
     taxonomy_distrubution = {}
     for row in df.itertuples():
-        taxonomy_key = format_string(row[2].strip())
-        taxonomy_distrubution[taxonomy_key] = int(row[3])
-    print("FAMILY TAX: ")
-    print(taxonomy_distrubution)
+        taxonomy_key = format_string(row[1].strip())
+        taxonomy_distrubution[taxonomy_key] = int(row[2])
     return taxonomy_distrubution
 
 def getFilteredTaxonomyData(args, filteredList = '("")'):
@@ -106,9 +128,7 @@ def getFilteredTaxonomyData(args, filteredList = '("")'):
         'select COUNT(`Accession`) as count from protein_metadata_small')
     filtered_size = get_db_data(
         'select COUNT(`Accession`) as count from protein_metadata_small m, taxonomy t where m.`Taxonomy_ID` = t.`Taxonomy_ID` AND `Realm` not in {} AND `Family` not in {} AND (`Accession` LIKE "%{}%" OR `Description` LIKE "%{}%" OR `Organism` LIKE "%{}%")'.format(filteredList, filteredList, args["search[value]"], args["search[value]"], args["search[value]"]))
-    
-    print(filtered_size['count'][0], file=sys.stderr)
-    print(total_size['count'][0], file=sys.stderr)
+
     tax_data = []
     for row in df.itertuples():
         tax_key = getattr(row, 'Accession')

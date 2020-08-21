@@ -11,7 +11,19 @@
                 <button id="reset" class="btn btn-sm btn-outline-secondary">Reset</button>
             </div>
         </div>
-        <h3 id="family-chart-header"></h3>
+        <div id="family-chart" class="hidden">
+            <h3 id="family-chart-header"></h3>
+            <form action="javascript:addFamily(family.value)">
+                <div class="form-group" style="width:50%;margin:auto">
+                    <label for="families">Choose a family to add it to the displayed distribution:</label>
+                    <select name="family" id="family" class="form-control">
+                        <!--<option value="Drexlerviridae">Drexlerviridae</option>
+                        <option value="Flaviviridae">Flaviviridae</option>-->
+                    </select>
+                    <input type="submit" value="Submit" class="btn btn-sm btn-outline-secondary">
+                </div>
+            </form>
+        </div>
     </div>
     <div class="chartAreaWrapper-viral-taxonomy">
         <div class="chartAreaWrapper2-viral-taxonomy">
@@ -22,7 +34,7 @@
 </div>
 
 <div id="table-section" class="hidden">
-    <h2 id="viral-list">Virolog List</h2>
+    <h2 id="viral-list">Viral Protein List</h2>
     <table id="taxTable" class="display" style="width:100%"></table>
 </div>
 {% endblock %}
