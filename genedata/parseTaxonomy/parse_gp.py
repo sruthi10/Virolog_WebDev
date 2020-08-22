@@ -25,7 +25,7 @@ from Bio import SeqIO
 from urllib.parse import urlencode
 from urllib.parse import unquote_plus
 
-fr = open('24_genes_genpeptfiles.gp')
+fr = open('200000_genes_genpeptfiles.gp')
 fw = open('proteinMetadata.csv', 'w+')
 fw.write("Accession, Description, Length, Topology, Last_Update_Date, dbSource, Source, Organism, Taxonomy_ID, Feature.Source")
 recs = list(SeqIO.parse(fr,'genbank'))

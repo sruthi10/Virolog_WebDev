@@ -206,6 +206,23 @@ def getFilteredTaxonomyData(filteredList):
     print(request.args, file=sys.stderr)
     return jsonify(virus_taxonomy.getFilteredTaxonomyData(request.args, filteredList))
 
+@app.route('/filteredTaxonomyData/<filteredList>/<familyList>')
+def getFamilyFilteredTaxonomyData(filteredList, familyList):
+    """Fetches all the viral tax data to be displayed but filtered by a family list as well
+    
+    Parameters
+    ----------
+    filteredList : list
+        list of the labels to not include for the data/ visualizations
+
+    Returns
+    -------
+    flask.Response()
+        an object with content-type header 'application/json' that contains viral tax labels and data, not including the labels listed in filteredList
+    """
+    print(request.args, file=sys.stderr)
+    return jsonify(virus_taxonomy.getFilteredTaxonomyData(request.args, filteredList, familyList))
+
 @app.route('/getFamilies/<realm>')
 def getFamilies(realm):
     families = virus_taxonomy.getFamilies(realm)

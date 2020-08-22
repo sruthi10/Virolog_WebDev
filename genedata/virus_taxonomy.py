@@ -96,7 +96,7 @@ def getFamilyTaxonomyDistribution(realm, familyList = '("")'):
         taxonomy_distrubution[taxonomy_key] = int(row[2])
     return taxonomy_distrubution
 
-def getFilteredTaxonomyData(args, filteredList = '("")'):
+def getFilteredTaxonomyData(args, filteredList = '("")', familyList = '("NA")'):
     """Get the filtered virus metadata and taxonomy data where Realm isn't in filteredList
 
     Parameters
@@ -122,12 +122,27 @@ def getFilteredTaxonomyData(args, filteredList = '("")'):
         orderby = "`Realm`"
     elif args["order[0][column]"] is '5':
         orderby = "`Family`"
-    df = get_db_data(
-        'select m.`Accession`, m.`Description`, m.`Length`, m.`Organism`, t.`Realm`, t.`Family` from protein_metadata_small m, taxonomy t where m.`Taxonomy_ID` = t.`Taxonomy_ID` AND `Realm` not in {} AND `Family` not in {} AND (`Accession` LIKE "%{}%" OR `Description` LIKE "%{}%" OR `Organism` LIKE "%{}%") order by {} {} limit {} offset {}'.format(filteredList, filteredList, args["search[value]"], args["search[value]"], args["search[value]"], orderby, args["order[0][dir]"], args["length"], args["start"]))
+    #df = get_db_data(
+    #    'select m.`Accession`, m.`Description`, m.`Length`, m.`Organism`, t.`Realm`, t.`Family` from protein_metadata m, taxonomy t where m.`Taxonomy_ID` = t.`Taxonomy_ID` AND `Realm` not in {} AND `Family` not in {} AND (`Accession` LIKE "%{}%" OR `Description` LIKE "%{}%" OR `Organism` LIKE "%{}%") order by {} {} limit {} offset {}'.format(filteredList, filteredList, args["search[value]"], args["search[value]"], args["search[value]"], orderby, args["order[0][dir]"], args["length"], args["start"]))
+    
+    initialQuery = 'SELECT * FROM tax_metadata WHERE (`Accession` LIKE "%{}%" OR `Description` LIKE "%{}%" OR `Organism` LIKE "%{}%" OR `Realm` LIKE "%{}%" OR `Family` LIKE "%{}%") AND `Realm` not in {} AND `Family` not in {}'
+    if familyList != '("NA")':
+        initialQuery = initialQuery + ' AND `Family` in {} order by {} {} limit {} offset {}'
+        initialQuery = initialQuery.format(args["search[value]"], args["search[value]"], args["search[value]"], args["search[value]"], args["search[value]"], filteredList, filteredList, familyList, orderby, args["order[0][dir]"], args["length"], args["start"])
+    else:
+        initialQuery = initialQuery + ' order by {} {} limit {} offset {}'
+        initialQuery = initialQuery.format(args["search[value]"], args["search[value]"], args["search[value]"], args["search[value]"], args["search[value]"], filteredList, filteredList, orderby, args["order[0][dir]"], args["length"], args["start"])
+    df = get_db_data(initialQuery)
     total_size = get_db_data(
-        'select COUNT(`Accession`) as count from protein_metadata_small')
-    filtered_size = get_db_data(
-        'select COUNT(`Accession`) as count from protein_metadata_small m, taxonomy t where m.`Taxonomy_ID` = t.`Taxonomy_ID` AND `Realm` not in {} AND `Family` not in {} AND (`Accession` LIKE "%{}%" OR `Description` LIKE "%{}%" OR `Organism` LIKE "%{}%")'.format(filteredList, filteredList, args["search[value]"], args["search[value]"], args["search[value]"]))
+        'select COUNT(`Accession`) as count from tax_metadata')
+    
+    countQuery = 'select COUNT(`Accession`) as count from tax_metadata WHERE (`Accession` LIKE "%{}%" OR `Description` LIKE "%{}%" OR `Organism` LIKE "%{}%" OR `Realm` LIKE "%{}%" OR `Family` LIKE "%{}%") AND `Realm` not in {} AND `Family` not in {}'
+    if familyList != '("NA")':
+        countQuery = countQuery + ' AND `Family` in {}'
+        countQuery = countQuery.format(args["search[value]"], args["search[value]"], args["search[value]"], args["search[value]"], args["search[value]"], filteredList, filteredList, familyList)
+    else:
+        countQuery = countQuery.format(args["search[value]"], args["search[value]"], args["search[value]"], args["search[value]"], args["search[value]"], filteredList, filteredList)
+    filtered_size = get_db_data(countQuery)
 
     tax_data = []
     for row in df.itertuples():

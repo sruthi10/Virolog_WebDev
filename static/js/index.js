@@ -29,6 +29,7 @@ function addFamily(family) {
             dataset.data.push(jsonData['count']);
         });
         currentChart.update();
+        buildHtmlTable('#taxTable');
     });
 }
 
@@ -234,7 +235,6 @@ function drawPieTaxonomy(){
                         var currentAlreadyHidden = (meta.data[index].hidden==null) ? false : (meta.data[index].hidden);
 
                         var label = meta.data[index]._model.label;
-                        realm = label;
                         if (currentAlreadyHidden) {
                             // add tag back to graph and table
                             meta.data[index].hidden=false;
@@ -247,6 +247,7 @@ function drawPieTaxonomy(){
                         }
                         if (filteredViralTax.length == 7) {
                             document.getElementById("family-chart-header").innerHTML = "Showing Top 5 Families for Realm " + label;
+                            realm = label;
                             drawFamilyPieTaxonomy(label);
                             return;
                         } else {
@@ -267,6 +268,12 @@ function drawPieTaxonomy(){
 function drawFamilyPieTaxonomy(realm) {
     var ctx = document.getElementById("myChart-viral-taxonomy").getContext('2d');
     $.getJSON( "/getFamilyTaxonomyDistribution/" + realm + "/(" + familyList.join(",") + ")", function(jsondata){
+            // add the top 5 families (labels) to familyList first
+            for (const fam of jsondata['labels']) {
+                familyList.push(`'`+fam+`'`);
+            }
+            console.log(familyList)
+            // destroy current chart and create new chart for families in 'realm'
             currentChart.destroy();
             currentChart = new Chart(ctx, {
             type: 'doughnut',
@@ -300,18 +307,19 @@ function drawFamilyPieTaxonomy(realm) {
                             meta.data[index].hidden=false;
                             var label = meta.data[index]._model.label;
                             filteredViralTax = filteredViralTax.filter(x => !x.includes(label))
-
+                            familyList.push(`'`+label+`'`);
                         } else {
                             meta.data[index].hidden=true;
                             var label = meta.data[index]._model.label;
                             filteredViralTax.push(`'`+label+`'`);
-
+                            familyList = familyList.filter(x => !x.includes(label))
                         }
                         ci.update();
                         if (filteredViralTax.length == 0) {
                             filteredViralTax = ["''"]
                         }
                         buildHtmlTable('#taxTable');
+                        console.log(familyList)
                     }
                 }
             }
@@ -323,8 +331,12 @@ function drawFamilyPieTaxonomy(realm) {
 }
 
 function viralTaxSelectAll() {
+    familyList = ["''"];
     currentChart.getDatasetMeta(0).data.forEach(function(ds) {
         ds.hidden = false;
+        if (realm != "") {
+            familyList.push(`'`+ds._model.label+`'`);
+        };
     });
     filteredViralTax = ["''"];
     currentChart.update();
@@ -337,6 +349,7 @@ function viralTaxDeselectAll() {
         ds.hidden = true;
         filteredViralTax.push(`'`+ds._model.label+`'`)
     });
+    familyList = ["''"];
     currentChart.update();
     buildHtmlTable('#taxTable');
 }
@@ -344,6 +357,7 @@ function viralTaxDeselectAll() {
 function viralTaxReset() {
     filteredViralTax = ["''"];
     familyList = ["''"];
+    realm = "";
     document.getElementById("family-chart-header").innerHTML = "";
     $("#family-chart").addClass('hidden');
     drawPieTaxonomy();
@@ -352,10 +366,14 @@ function viralTaxReset() {
 
 // Builds the HTML Table out of myList
 function buildHtmlTable(selector) {
+    query = "/filteredTaxonomyData/(" + filteredViralTax.join(",") + ")"
+    if (realm != "") {
+        query = query + "/(" + familyList.join(",") + ")"
+    }
     $(selector).DataTable( {
         processing: true,
         serverSide: true,
-        ajax: "/filteredTaxonomyData/(" + filteredViralTax.join(",") + ")",
+        ajax: query,
         destroy: true,
         columns: [
             { title: "Accession ID"},
