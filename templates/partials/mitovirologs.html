@@ -1,0 +1,26 @@
+{% extends "layout.html"}
+{% block title %}Visualization of Viral Proteome - MitoViroLogs{% endblock %}
+{% block header %}MitoViroLogs{% endblock %}
+{% block content %}
+
+<div class="chartWrapper-MitoViroLogs" id="mitovirologs">
+    <div class="chartAreaWrapper">
+        <div class="chartAreaWrapper2">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+    <div><h2>Filters</h2></div>
+    <canvas id="myChartAxis" height="300" width="0"></canvas>
+    <div>
+        <form id="pvalue-restrictor">
+            <input type="number" step="any" value="0.5" name="pvalueMin" placeholder="Min" min="0.00" max="1.00">
+            <input type="number" step="any" value="1" name="pvalueMax" placeholder="Max" min="0.00" max="1.00">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-play"></i> Draw
+            </button>
+        </form>
+    </div>
+    <div><p>Click on legend colors to toggle a particular graph on/off.</p></div>
+</div>
+{% endblock %}
+
