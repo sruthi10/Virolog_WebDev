@@ -32,7 +32,7 @@ def get_db_data(query):
     """
     connection = pymysql.connect(host='127.0.0.1',
                                  user='root',
-                                 password='root', # on cloud server: pw = root
+                                 password='password', # on cloud server: pw = root
                                  db='viralanalysisdb',
                                  cursorclass=pymysql.cursors.DictCursor)
     df = pd.read_sql(query, connection)
@@ -47,7 +47,7 @@ def getFamilies(realm):
         a list with families in realm
     """
     df = get_db_data(
-        'select `family`, COUNT(`family`) from taxonomy where `realm` = "{}" group by `family`'.format(realm))
+        'select `family`, COUNT(`family`) from tax_metadata where `realm` = "{}" group by `family`'.format(realm))
     result = {}
     for row in df.itertuples():
         key = format_string(row[1].strip())
@@ -63,8 +63,7 @@ def getFamilyCount(family):
         a count of proteins in the given family
     """
     df = get_db_data(
-        'select COUNT(`family`) as taxocount from taxonomy where `family` = "{}" group by `family`'.format(family))
-    print('select COUNT(`family`) as taxocount from taxonomy where `family` = "{}" group by `family`'.format(family))
+        'select COUNT(`family`) as taxocount from tax_metadata where `family` = "{}" group by `family`'.format(family))
     print(df.values[0][0])
     return df.values[0][0]
 
@@ -145,6 +144,9 @@ def getFilteredTaxonomyData(args, filteredList = '("")', familyList = '("NA")'):
     else:
         countQuery = countQuery.format(args["search[value]"], args["search[value]"], args["search[value]"], args["search[value]"], args["search[value]"], filteredList, filteredList)
     filtered_size = get_db_data(countQuery)
+    print("*****QUERIES******")
+    print(initialQuery)
+    print(countQuery)
 
     tax_data = []
     for row in df.itertuples():

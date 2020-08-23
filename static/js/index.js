@@ -2,11 +2,11 @@ var currentChart;
 var filteredViralTax = ["''"];
 var familyList = ["''"];
 var realm = '';
+var nonRealms = ["''"];
 var showAllFamilies = false;
 
 function createFamilyOptions() {
     $.getJSON( "/getFamilies/" + realm, function(families){
-        console.log(families['values']);
         var select = document.getElementById("family");
         select.innerHTML = '';
 
@@ -29,7 +29,6 @@ function addFamily(family) {
         currentChart.data.datasets.forEach((dataset) => {
             dataset.data.push(jsonData['count']);
         });
-        showAllFamilies = true;
         currentChart.update();
         buildHtmlTable('#taxTable');
     });
@@ -37,7 +36,6 @@ function addFamily(family) {
 
 function addAllFamilies() {
     $.getJSON( "/getFamilies/" + realm, function(families){
-        console.log(families['values']);
         var select = document.getElementById("family");
         select.innerHTML = '';
 
@@ -264,7 +262,6 @@ function drawPieTaxonomy(){
                             // add tag back to graph and table
                             meta.data[index].hidden=false;
                             filteredViralTax = filteredViralTax.filter(x => !x.includes(label))
-
                         } else {
                             meta.data[index].hidden=true;
                             filteredViralTax.push(`'`+label+`'`);
@@ -273,6 +270,7 @@ function drawPieTaxonomy(){
                         if (filteredViralTax.length == 7) {
                             document.getElementById("family-chart-header").innerHTML = "Showing Top 5 Families for Realm " + label;
                             realm = label;
+                            nonRealms = filteredViralTax.slice();
                             drawFamilyPieTaxonomy(label);
                             return;
                         } else {
@@ -297,7 +295,6 @@ function drawFamilyPieTaxonomy(realm) {
             for (const fam of jsondata['labels']) {
                 familyList.push(`'`+fam+`'`);
             }
-            console.log(familyList)
             // destroy current chart and create new chart for families in 'realm'
             currentChart.destroy();
             currentChart = new Chart(ctx, {
@@ -344,7 +341,6 @@ function drawFamilyPieTaxonomy(realm) {
                             familyList = ["''"]
                         }
                         buildHtmlTable('#taxTable');
-                        console.log(familyList)
                     }
                 }
             }
@@ -363,13 +359,13 @@ function viralTaxSelectAll() {
             familyList.push(`'`+ds._model.label+`'`);
         };
     });
-    filteredViralTax = ["''"];
+    filteredViralTax = nonRealms.slice();
     currentChart.update();
     buildHtmlTable('#taxTable');
 }
 
 function viralTaxDeselectAll() {
-    filteredViralTax = ["''"];
+    filteredViralTax = nonRealms.slice();
     currentChart.getDatasetMeta(0).data.forEach(function(ds) {
         ds.hidden = true;
         filteredViralTax.push(`'`+ds._model.label+`'`)
@@ -393,7 +389,7 @@ function viralTaxReset() {
 // Builds the HTML Table out of myList
 function buildHtmlTable(selector) {
     query = "/filteredTaxonomyData/(" + filteredViralTax.join(",") + ")"
-    if (realm != "" || showAllFamilies == false) {
+    if (realm != "") {
         query = query + "/(" + familyList.join(",") + ")"
     }
     $(selector).DataTable( {
