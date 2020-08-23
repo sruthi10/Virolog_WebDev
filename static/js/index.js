@@ -380,6 +380,7 @@ function viralTaxReset() {
     familyList = ["''"];
     realm = "";
     showAllFamilies = false;
+    nonRealms = ["''"];
     document.getElementById("family-chart-header").innerHTML = "";
     $("#family-chart").addClass('hidden');
     drawPieTaxonomy();
