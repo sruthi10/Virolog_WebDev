@@ -32,7 +32,7 @@ def get_db_data(query):
     """
     connection = pymysql.connect(host='127.0.0.1',
                                  user='root',
-                                 password='password', # on cloud server: pw = root
+                                 password='root', # on cloud server: pw = root
                                  db='viralanalysisdb',
                                  cursorclass=pymysql.cursors.DictCursor)
     df = pd.read_sql(query, connection)
