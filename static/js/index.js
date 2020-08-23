@@ -33,6 +33,28 @@ function addFamily(family) {
     });
 }
 
+function addAllFamilies() {
+    $.getJSON( "/getFamilies/" + realm, function(families){
+        console.log(families['values']);
+        var select = document.getElementById("family");
+        select.innerHTML = '';
+
+        for (i = 0; i < families['values'].length; i++) {
+            family = families['values'][i];
+            count = families['counts'][i];
+            if (!currentChart.data.labels.includes(family)) {
+                familyList.push(`'`+family+`'`);
+                currentChart.data.labels.push(family);
+                currentChart.data.datasets.forEach((dataset) => {
+                    dataset.data.push(count);
+                });
+            }
+        };
+        console.log("updating chart");
+        drawFamilyPieTaxonomy(realm);
+    });
+}
+
 function drawChart(pvalue = 0.5) {
     var ctx = document.getElementById("myChart").getContext('2d');
     $.getJSON( "/getcleavagesitesdata/" + pvalue, function(jsondata){
@@ -46,12 +68,12 @@ function drawChart(pvalue = 0.5) {
             data: {
                 labels: cleavagelabels,
                 datasets: [{
-                    label: 'Virus',
-                    data: cleavagesitevaluesvirus,
-                    backgroundColor: 'rgba(254, 101, 1, 1)',
-                    borderColor: 'rgba(254, 101, 1, 1)',
-                    borderWidth: 1
-                },
+                               label: 'Virus',
+                               data: cleavagesitevaluesvirus,
+                               backgroundColor: 'rgba(254, 101, 1, 1)',
+                               borderColor: 'rgba(254, 101, 1, 1)',
+                               borderWidth: 1
+                            },
                            {
                                label: 'Human',
                                data: cleavagesitevalueshuman,

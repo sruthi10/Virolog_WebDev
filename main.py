@@ -225,9 +225,10 @@ def getFamilyFilteredTaxonomyData(filteredList, familyList):
 
 @app.route('/getFamilies/<realm>')
 def getFamilies(realm):
-    families = virus_taxonomy.getFamilies(realm)
+    families, counts = virus_taxonomy.getFamilies(realm)
     jsonData = {
-        'values': families
+        'values': families,
+        'counts': counts
     }
     return jsonify(jsonData)
 

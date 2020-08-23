@@ -47,9 +47,12 @@ def getFamilies(realm):
         a list with families in realm
     """
     df = get_db_data(
-        'select distinct `family` from taxonomy where `realm` = "{}"'.format(realm))
-    print(df.values.tolist())
-    return df.values.tolist()
+        'select `family`, COUNT(`family`) from taxonomy where `realm` = "{}" group by `family`'.format(realm))
+    result = {}
+    for row in df.itertuples():
+        key = format_string(row[1].strip())
+        result[key] = int(row[2])
+    return format_taxonomy(result)
 
 def getFamilyCount(family):
     """Get the number of occurrences of family in the db
@@ -61,6 +64,7 @@ def getFamilyCount(family):
     """
     df = get_db_data(
         'select COUNT(`family`) as taxocount from taxonomy where `family` = "{}" group by `family`'.format(family))
+    print('select COUNT(`family`) as taxocount from taxonomy where `family` = "{}" group by `family`'.format(family))
     print(df.values[0][0])
     return df.values[0][0]
 
@@ -73,7 +77,7 @@ def getTaxonomyDistribution():
         a dictionary with label = Realm, data = count(Realm)
     """
     df = get_db_data(
-        'select `realm`, COUNT(`realm`) as taxocount from taxonomy group by `realm`')
+        'select `realm`, COUNT(`realm`) as taxocount from tax_metadata group by `realm`')
     taxonomy_distrubution = {}
     for row in df.itertuples():
         taxonomy_key = format_string(row[1].strip())
@@ -89,7 +93,7 @@ def getFamilyTaxonomyDistribution(realm, familyList = '("")'):
         a dictionary with label = family, data = count(family)
     """
     df = get_db_data(
-        'select * from ((select `family`, COUNT(`family`) as taxocount from taxonomy where `realm` = "{}" group by `family` order by taxocount desc limit 5) UNION (SELECT `family`, COUNT(`family`) as taxocount FROM taxonomy where `family` in {} group by `family`)) as d where `family` is not null'.format(realm, familyList))
+        'select * from ((select `family`, COUNT(`family`) as taxocount from tax_metadata where `realm` = "{}" group by `family` order by taxocount desc limit 5) UNION (SELECT `family`, COUNT(`family`) as taxocount FROM tax_metadata where `family` in {} group by `family`)) as d where `family` is not null'.format(realm, familyList))
     taxonomy_distrubution = {}
     for row in df.itertuples():
         taxonomy_key = format_string(row[1].strip())
