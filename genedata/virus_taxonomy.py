@@ -126,8 +126,6 @@ def getFilteredTaxonomyData(args, filteredList = '("")', familyList = '("NA")'):
         orderby = "`Realm`"
     elif args["order[0][column]"] is '5':
         orderby = "`Family`"
-    #df = get_db_data(
-    #    'select m.`Accession`, m.`Description`, m.`Length`, m.`Organism`, t.`Realm`, t.`Family` from protein_metadata m, taxonomy t where m.`Taxonomy_ID` = t.`Taxonomy_ID` AND `Realm` not in {} AND `Family` not in {} AND (`Accession` LIKE "%{}%" OR `Description` LIKE "%{}%" OR `Organism` LIKE "%{}%") order by {} {} limit {} offset {}'.format(filteredList, filteredList, args["search[value]"], args["search[value]"], args["search[value]"], orderby, args["order[0][dir]"], args["length"], args["start"]))
     
     initialQuery = 'SELECT * FROM tax_metadata WHERE (`Accession` LIKE "%{}%" OR `Description` LIKE "%{}%" OR `Organism` LIKE "%{}%" OR `Realm` LIKE "%{}%" OR `Family` LIKE "%{}%") AND `Realm` not in {} AND `Family` not in {}'
     if familyList != '("NA")':
