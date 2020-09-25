@@ -1,0 +1,9 @@
+mitofates_* files are used for to generate both preseuqence_probability and cleavage site plots 
+
+mitofates_viral_cleaned.csv --> contains duplicates in terms of mito proability , but different for cleavage site information 
+
+mitofates_viral1_cleaned.csv --> wihtout duplicates (might should use for mitochondiral local)
+mitofate_mouse --. duplicates not removed... (300+ due to that)
+
+
+, so for 
