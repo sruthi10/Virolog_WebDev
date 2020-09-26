@@ -6,4 +6,17 @@ mitofates_viral1_cleaned.csv --> wihtout duplicates (might should use for mitoch
 mitofate_mouse --. duplicates not removed... (300+ due to that)
 
 
-, so for 
+------
+9/25/2020
+The below are direct result from mitofates
+mitofatesResults_Mouse.MitoCarta2.0.csv
+mitofatesResults_Human.MitoCarta2.0.csv
+mitofatesResults_viral_combined.csv (combined version of viral1 and viral 2) 
+
+The below are clened version wehre clevage site hits separated ( so there will be duplicate entry by sequence ID ,but unique entry by row. because 1 protein can have multiple cleavage sites)
+
+mitofatesResults_Human.MitoCarta2.0-cleaned.csv
+mitofatesResults_Mouse.MitoCarta2.0-cleaned.csv
+mitofates_viral_cleaned.csv (need to run mitofatesResults_viral_combined.csv  to get in this format as this file contain all 314000+ proteins) contains protein (might be duplicate entries based id or sequence id if there are multiple cleavage sites within one protein sequence)
+
+mitofates_viral1-cleaned2.csv --> only viral1.proteome run output file with unique entry based on ID and sequence ID ( just cleaned version than mitofates_viral1-cleaned.csv, so it will have less data as only one cleavage site informaiton is kept)  --> this exactly same as mitofatesResults_viral_combined.csv with 251,000+ proteins from viral1.proteome

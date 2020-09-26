@@ -128,20 +128,27 @@ def getPresequenceProbabilityData(pvalueMin, pvalueMax):
         an object with content-type header 'application/json' that contains preseq prob data
     """
     probability_mapping_virus = presequence_probability.get_mapping(
-        r'genedata/outputdata/mitofates_viral_cleaned.csv')
+        r'genedata/outputdata/mitofatesResults_viral_combined.csv',0)
+    print("virus",sum(probability_mapping_virus.values()))
     probability_mapping_virus_mapping_human = presequence_probability.get_mapping(
-        r'genedata/outputdata/mitofatesResults_Human.MitoCarta2.0-cleaned.csv')
+        r'genedata/outputdata/mitofatesResults_Human.MitoCarta2.0.csv',0)
+    print("human", sum(probability_mapping_virus_mapping_human.values()))
     probability_mapping_virus_mapping_mouse = presequence_probability.get_mapping(
-        r'genedata/outputdata/mitofatesResults_Mouse.MitoCarta2.0-cleaned.csv')
+        r'genedata/outputdata/mitofatesResults_Mouse.MitoCarta2.0.csv',1)
+    print("mouse", sum(probability_mapping_virus_mapping_mouse.values()))
+
 
     probability_labels_virus, probability_site_values_virus = \
         presequence_probability.format_values(probability_mapping_virus, pvalueMin, pvalueMax)
+    print("virus",sum(probability_site_values_virus))
     probability_labels_human, probability_site_values_human = \
         presequence_probability.format_values(
             probability_mapping_virus_mapping_human, pvalueMin, pvalueMax)
+    print("human", sum(probability_site_values_human))
     probability_labels_mouse, probability_site_values_mouse = \
         presequence_probability.format_values(
             probability_mapping_virus_mapping_mouse, pvalueMin, pvalueMax)
+    print("mouse", sum(probability_site_values_mouse))
 
     jsonData = {
         'probabilitymappinglabels': probability_labels_human,

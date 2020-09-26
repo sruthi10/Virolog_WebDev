@@ -92,18 +92,18 @@ function drawChartProbability(pvalueMin = 0.5, pvalueMax = 1.0) {
                     data: probabilityvaluesvirus,
                     borderColor: 'rgba(254, 101, 1, 1)',
                 },
-                           {
-                               label: 'Human',
-                               data: probabilityvalueshuman,
-                               borderColor: 'rgba(98, 0, 164, 1)',
-                               fill: false
-                           },
-                           {
-                               label: 'Mouse',
-                               data: probabilityvaluesmouse,
-                               borderColor: 'rgba(15, 173, 0, 1)',
-                               fill: false
-                           }]
+                    {
+                        label: 'Human',
+                        data: probabilityvalueshuman,
+                        borderColor: 'rgba(98, 0, 164, 1)',
+                        fill: false
+                    },
+                    {
+                        label: 'Mouse',
+                        data: probabilityvaluesmouse,
+                        borderColor: 'rgba(15, 173, 0, 1)',
+                        fill: false
+                    }]
             },
             options: {
                 scales: {
@@ -120,7 +120,7 @@ function drawChartProbability(pvalueMin = 0.5, pvalueMax = 1.0) {
                         },
                         ticks: {
                             callback: function(value) {
-                                return value.toFixed(2); //truncate
+                                return value.toFixed(3); //truncate
                             }
                         }
                     }]

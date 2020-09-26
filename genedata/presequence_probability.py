@@ -30,7 +30,7 @@ def get_csv_data(filename):
     return df
 
 
-def get_mapping(filename):
+def get_mapping(filename,val):
     """Map data in CSV file so probability maps to num of presequences that have that probability (EX: 0.75 -> 10 indicates 10 presequences have probability of 0.75)
 
     Parameters
@@ -44,8 +44,9 @@ def get_mapping(filename):
         Dict that represent the resulting mapping
     """
     df = get_csv_data(filename)
+    df['probability_of_presequence'] = df['probability_of_presequence'].round(2)
     mapping = df.groupby(['probability_of_presequence']).size().to_dict()
-    del mapping[0]
+    #del mapping[0] # this delete all 0.0 probabilities
     orderedMapping = OrderedDict(sorted(mapping.items()))
     return orderedMapping
 
@@ -55,7 +56,7 @@ def format_values(mapping, pvalueMin, pvalueMax):
 
     Parameters
     ----------
-    mapping : OrderedDict
+    mapping : OrderedDict`
         ordered dictionary of probabilities and their size
     pvalueMin : float
         min P-value to include
@@ -73,5 +74,11 @@ def format_values(mapping, pvalueMin, pvalueMax):
         if key >= pvalueMin and key <= pvalueMax:
             probability_labels.append(key)
             probability_values.append(value)
+    """probability_labels = [round(num, 3) for num in probability_labels]
+    probability_labels = [round(num, 3) for num in probability_labels]
+    """
+    print("la")
+    print(probability_labels)
+    print(probability_values)
 
     return probability_labels, probability_values
