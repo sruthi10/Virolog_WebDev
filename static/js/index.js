@@ -120,7 +120,7 @@ function drawChartProbability(pvalueMin = 0.5, pvalueMax = 1.0) {
                         },
                         ticks: {
                             callback: function(value) {
-                                return value.toFixed(3); //truncate
+                                return value.toFixed(3); //truncate (this isn't necessary as already bound by line 48 in presequn_probability.py
                             }
                         }
                     }]

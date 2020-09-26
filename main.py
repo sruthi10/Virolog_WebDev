@@ -140,15 +140,15 @@ def getPresequenceProbabilityData(pvalueMin, pvalueMax):
 
     probability_labels_virus, probability_site_values_virus = \
         presequence_probability.format_values(probability_mapping_virus, pvalueMin, pvalueMax)
-    print("virus",sum(probability_site_values_virus))
+    print("virus count with bounds",sum(probability_site_values_virus))
     probability_labels_human, probability_site_values_human = \
         presequence_probability.format_values(
             probability_mapping_virus_mapping_human, pvalueMin, pvalueMax)
-    print("human", sum(probability_site_values_human))
+    print("human count with bounds", sum(probability_site_values_human))
     probability_labels_mouse, probability_site_values_mouse = \
         presequence_probability.format_values(
             probability_mapping_virus_mapping_mouse, pvalueMin, pvalueMax)
-    print("mouse", sum(probability_site_values_mouse))
+    print("mouse count with bounds", sum(probability_site_values_mouse))
 
     jsonData = {
         'probabilitymappinglabels': probability_labels_human,

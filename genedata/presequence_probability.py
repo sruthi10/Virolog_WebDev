@@ -44,9 +44,10 @@ def get_mapping(filename,val):
         Dict that represent the resulting mapping
     """
     df = get_csv_data(filename)
+    #to round the input have only 2 decimal values
     df['probability_of_presequence'] = df['probability_of_presequence'].round(2)
     mapping = df.groupby(['probability_of_presequence']).size().to_dict()
-    #del mapping[0] # this delete all 0.0 probabilities
+    #del mapping[0] # this delete all 0.0 probabilities (removed to even get the count how many have 0 probability)
     orderedMapping = OrderedDict(sorted(mapping.items()))
     return orderedMapping
 
@@ -74,9 +75,7 @@ def format_values(mapping, pvalueMin, pvalueMax):
         if key >= pvalueMin and key <= pvalueMax:
             probability_labels.append(key)
             probability_values.append(value)
-    """probability_labels = [round(num, 3) for num in probability_labels]
-    probability_labels = [round(num, 3) for num in probability_labels]
-    """
+    # debug statements
     print("la")
     print(probability_labels)
     print(probability_values)
