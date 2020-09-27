@@ -11,11 +11,11 @@ The following functions are available:
     * format_string - helper function to make sure DNA labels are correctly formatted
 """
 
+from . import config
 import pandas as pd
 import pymysql
 import pymysql.cursors
-import sys # only need to printing to console
-
+import sys
 
 def get_db_data(query):
     """Connect to DB and execute query
@@ -30,10 +30,10 @@ def get_db_data(query):
     DataFrame
         DF of rows that represent result of query
     """
-    connection = pymysql.connect(host='127.0.0.1',
-                                 user='root',
-                                 password='password', # on cloud server: pw = root
-                                 db='viralanalysisdb',
+    connection = pymysql.connect(host=config.DBHOST,
+                                 user=config.DBUSER,
+                                 password=config.DBPASSWORD,
+                                 db=config.DBNAME,
                                  cursorclass=pymysql.cursors.DictCursor)
     df = pd.read_sql(query, connection)
     return df 
