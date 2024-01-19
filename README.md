@@ -1,17 +1,15 @@
 
 # Genome Visualization
 
-
 Visualization of Viral Proteome based on Mitochondrial Localization. 
 
 Focuses on: 
+1. Probability distribution of Viral Proteins based on Mitochondrial Targeting Signal Peptide and Trans-membrane Domains 
+2. Cleavage Sites distribution of Viral Proteins based on probability of containing mitochondrial target sequence  
+3. Comparison of viral proteome mitochondrial localization prediction results against Human and Mouse Mitochondrial Proteins (mitoCarta)
+4. Virologs (viral protein with host homolog) to uncover new serviceable aspects of protein based on sequence(structural) comparison.
 
-1. Probability distribution of Viral Proteins as Mitochondrial Targeting Sequences and as Trans-membrane Protein 
-2. Cleavage Sites distribution of Viral Proteins based on probability of being mitochondrial target sequence  
-3. Comparison of viral protemoe against Human and Mouse Mitochondrial Proteins
-4. Viral Orthologs to uncover new functional aspects of protein based on structural comparison.
-
-Goal of the project is to provide interactive application for user to access data analysis of entire Viral Proteome based on orthologs to Human Proteins, Localization, ISG and various filters probability of being mitochondrial protein, number of cleavage sites, probability of being Trans-membrane protein to obtain complete list of viral protein information (including Accession ID, Protein Name, Probability of Mitochondrial signal, Virus Type). This would help researchers acquire viral proteins that mimic the host (human) mitochondrial localized proteins.
+Goal of the project is to provide an interactive application for users to access data analysis of the entire Viral Proteome based on (1) orthologs to Human Proteins, (2) Subcellular Localization, (3) Gene Expression (cell-type, regulation eg. ISG) and various host filters. In addition, provide interactive data plots for visualization of viral proteome results based on subcellular localization including distribution plots, (1)probability of being mitochondrial protein, (2)number of cleavage sites of protein, and (3) probability of containing trans-membrane domains, and to obtain a complete list of viral protein information (including Accession ID, Protein Name, Probability of Mitochondrial signal, Virus Type). This would help researchers acquire viral proteins that mimic the host (human) mitochondrial localized proteins.
 
 ## Code Structure
 <pre>
@@ -87,7 +85,7 @@ Goal of the project is to provide interactive application for user to access dat
 
 ## Deployment
 
-It is assumed that this repo has been cloned locally and you are in the base directory for the cloned repo. Follow the steps at the following url : https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-16-04
+It is assumed that this repo has been cloned locally and you are in the base directory for the cloned repo. Follow the steps at the following url: https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-16-04
 
 1. Create a python virtual environment and activate it ([how?](http://www.pythonforbeginners.com/basics/how-to-use-python-virtualenv 'Detailed info how to create a virtualenv')).
 2. Run the following the command after activating the virtualenv:
@@ -102,4 +100,4 @@ It is assumed that this repo has been cloned locally and you are in the base dir
 4. Go to http://localhost:5000 in your browser.
 
 ## Database
-The app currently uses a mix of csv files and mysql database to store the data. It's in process of migrating from csv to mysql. The database is currently hosted on the same cloud server as that of the app.
+The app currently uses a mix of csv files and mysql database to store the data. It's in the process of migrating from csv to mysql. The database is currently hosted on the same cloud server as that of the app.
